@@ -168,7 +168,7 @@
 </head>
 <body>
 <div id="wrapper">
-<form name="settingFrm" action="" method="get" onsubmit="enterRoom(this)">
+<form name="settingFrm" action="" method="get">
 <input type="hidden" name="myChosenProfile" value=""/>
 <input type="hidden" name="opChosenProfile" value=""/>
 <input type="hidden" name="myChosenRoster" value=""/>
@@ -332,7 +332,7 @@
 	<option value=""></option>
 	</select>
 </div>
-<input type="submit" id="finish" value="입장"/>
+<input type="submit" id="finish" value="입장"  onclick="enterRoom(this)"/>
 </form>
 </div>
 
