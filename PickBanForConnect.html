@@ -7,8 +7,8 @@
 		/*시작시 들고있어야 할 정보들*/
 		var myProfile = opener.document.getElementById("myChosenProfile").value;
 		var opProfile = opener.document.getElementById("myChosenProfile").value;
-		myTumbnail.src = "url('./프로필/" + myProfile + ".png";
-		opTumbnail.src = "url('./프로필/" + myProfile + ".png";
+		document.getElementById(myTumbnail).src = "url('./프로필/" + myProfile + ".png";
+		document.getElementById(opTumbnail).src = "url('./프로필/" + myProfile + ".png";
 		var myR = opener.document.getElementById("myChosenRoster").value;
 		var opR = opener.document.getElementById("opChosenRoster").value;
 		var myRoster=myR.split(",");
