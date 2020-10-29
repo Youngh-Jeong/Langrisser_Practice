@@ -1,0 +1,35 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./jquery.js"></script>
+	<script>
+		function count_ck3(obj){}
+	</script>
+</head>
+<body>
+<p id="test">12</p>
+</body>
+<script>
+		var arr=["1","2","3","4","5"]; // 3의배수가 되도록 맞춰줄 것
+		var html="";
+		html = html+'<form><input type="submit" value="선택" id="profileSelect"/><div id="forScroll"><table class="profileTable" id="picTable">'; // 머리
+		for (var i = 0;i<parseInt(arr.length/3)+1 ;i++ ){ // 줄 진입
+			/*if (i==parseInt(arr.length/3)-1){ // 마지막줄이면 2개, 아니면 3개
+				q = arr.length%3;
+			}*/
+			html=html+"<tr>";
+			for (var j=0;j<3;j++){// 각 칸마다
+				var no = i*3 + j + 1
+				html=html+"<td>";
+				html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck3(this)";/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
+				html=html+"</td>";
+			}
+			html=html+"</tr>";
+		}
+		html=html+"</table></div></form>";
+		alert(html);
+		var test = document.getElementById("test");
+		test.innerHTML=html;
+	</script>
+</html>

@@ -1,0 +1,257 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base.css" type="text/css" rel="stylesheet"/>
+	<script>
+		/*시작시 들고있어야 할 정보들*/
+		var isFirst=false;//선을 정하는 방법? 로비에서 넘어오면서 처리 후 들고옴. 후공이라고 가정하고 작성
+		var myRoster=["란디우스","쥬그라","윌러","리아나","아이리스","디드리트","유스케","보젤","리스틸","미지의기사","유리아","젤다","클라렛","히에이","루나"];
+		var opRoster=["레이첼","보젤","란디우스","쥬그라","디드리트","리스틸","티아리스","레딘","유스케","리아나","아레스","아이리스","마이야","윌러","젤다"];
+		var myPick=["","","","",""];
+		var opPick=["","","","",""];
+		/*정보들 끝*/
+		var turn=-1;
+		var isBan=true;
+
+		function pick_ban(){ 
+			if (turn==-1){
+				for (var i = 0;i<myRoster.length ;i++ ){
+					var myId ="lmy" + (i+1);
+					var hero = document.getElementById("lmy" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ myRoster[i] +".png')";
+				}
+				for (var i = 0;i<opRoster.length ;i++ ){
+					var opId ="lop" + (i+1);
+					var hero = document.getElementById("lop" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ opRoster[i] +".png')";
+				}
+			}
+		}
+		function count_ck(obj){
+			var chkbox = document.getElementsByName("myRoster");
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			if(chkCnt>1){
+				alert("1개만 고르세요");
+				obj.checked = false;
+				return false;
+			}
+		}
+		function count_ck2(obj){
+			var chkbox = document.getElementsByName("opRoster");
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			if(turn==0){
+				if(chkCnt>1){
+				alert("1개만 고르세요");
+				obj.checked = false;
+				return false;
+				}
+			}
+			if(chkCnt>2){
+				alert("2개만 고르세요");
+				obj.checked = false;
+				return false;
+			}
+		}
+	</script>
+</head>
+<body>
+<div id="wrapper">
+<div class="profile" id="user">
+	<img class="tumbnail" src="./프로필/그레니어.png"/>
+	<img class="isFirst" src="./기타/선마크.png"/>
+	<p class="nickname">그레니어</p>
+</div>
+<div class="profile" id="opponent">
+	<img class="isFirst" src="./기타/선마크.png"/>
+	<img class="tumbnail" src="./프로필/사쿠라.png"/>
+	<p class="nickname">사쿠라</p>
+</div>
+<div id="timer"></div>
+<div id="chat"></div>
+<div id="map"></div>
+<form name="pickban" action="" method="post" onsubmit="return pick_ban(this);">
+<!-- 내 로스터 시작 -->
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my1" disabled="disabled" onclick="count_ck(this)";/>
+		<label for="my1" id="lmy1"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my2" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my2" id="lmy2"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my3" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my3" id="lmy3"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my4" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my4" id="lmy4"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my5" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my5" id="lmy5"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my6" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my6" id="lmy6"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my7" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my7" id="lmy7"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my8" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my8" id="lmy8"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my9" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my9" id="lmy9"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my10" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my10" id="lmy10"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my11" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my11" id="lmy11"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my12" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my12" id="lmy12"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my13" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my13" id="lmy13"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my14" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my14" id="lmy14"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my15" disabled="disabled" onclick="count_ck(this)"/>
+		<label for="my15" id="lmy15"/></label>
+		</td>
+	</tr>
+</table>
+<!-- 내 로스터 끝 -->
+<!-- 상대 로스터 시작 -->
+<table class="roster" id="opTable">
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op1" onclick="count_ck2(this)"/>
+		<label for="op1" id="lop1"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op2" onclick="count_ck2(this)"/>
+		<label for="op2" id="lop2"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op3" onclick="count_ck2(this)"/>
+		<label for="op3" id="lop3"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op4" onclick="count_ck2(this)"/>
+		<label for="op4" id="lop4"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op5" onclick="count_ck2(this)"/>
+		<label for="op5" id="lop5"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op6" onclick="count_ck2(this)"/>
+		<label for="op6" id="lop6"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op7" onclick="count_ck2(this)"/>
+		<label for="op7" id="lop7"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op8" onclick="count_ck2(this)"/>
+		<label for="op8" id="lop8"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op9" onclick="count_ck2(this)"/>
+		<label for="op9" id="lop9"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op10" onclick="count_ck2(this)"/>
+		<label for="op10" id="lop10"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op11" onclick="count_ck2(this)"/>
+		<label for="op11" id="lop11"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op12" onclick="count_ck2(this)"/>
+		<label for="op12" id="lop12"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op13" onclick="count_ck2(this)"/>
+		<label for="op13" id="lop13"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op14" onclick="count_ck2(this)"/>
+		<label for="op14" id="lop14"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op15" onclick="count_ck2(this)"/>
+		<label for="op15" id="lop15"/></label>
+		</td>
+	</tr>
+</table>
+<!-- 상대 로스터 끝 -->
+<!--<input type="image" id="submit" value="세팅" src="./기타/확정2.png" onclick="pick_ban()"/>-->
+<input type="button" id="submit" value="세팅"  onclick="pick_ban()"/>
+<input type="button" id="ban" value="밴" onclick="ban()"/>
+<input type="button" id="pick" value="픽" onclick="pick()"/>
+</form>
+<!-- 로스터 끝-->
+<!-- 픽밴 현황창-->
+<div class="pickedList" id="myPicked">
+	<div class="picked" id="myPicked1"></div>
+	<div class="picked" id="myPicked2"></div>
+	<div class="picked" id="myPicked3"></div>
+	<div class="picked" id="myPicked4"></div>
+	<div class="picked" id="myPicked5"></div>
+</div>
+<div class="pickedList" id="opPicked">
+	<div class="picked" id="opPicked1"></div>
+	<div class="picked" id="opPicked2"></div>
+	<div class="picked" id="opPicked3"></div>
+	<div class="picked" id="opPicked4"></div>
+	<div class="picked" id="opPicked5"></div>
+</div>
+<!-- 픽밴 현황창 끝-->
+</div>
+</div>
+</body>
+</html>

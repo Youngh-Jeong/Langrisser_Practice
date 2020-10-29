@@ -1,0 +1,43 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		input[type="checkbox"] + label {
+		display: block;
+		width: 70px;
+		height: 70px;
+		background: url('./프로필/스미레.png') no-repeat 0 0px / contain;
+		}
+
+		/*체크될 때*/
+		input[type='checkbox']:checked + label {
+			width:80px;
+			height:80px;
+		}
+		input[type="checkbox"] {
+			display: none;
+		}
+	</style>
+	<script>
+		function pick_ban(){
+			var label = document.getElementById("lmy1");
+			label.style.backgroundImage ="url('./프로필/사쿠라.png')";
+		}
+		function inner(){
+			alert("안쪽");
+		}
+		function outer(){
+			inner();
+		}
+	</script>
+</head>
+<body>
+	<form name="pickban" action="" method="post">
+		<input type="checkbox" name="myRoster" class="myHero" id="my1"/>
+		<label for="my1" id="lmy1"></label>
+
+		<input type="button" id="submit" onclick="outer"/>
+	</form>
+</body>
+</html>

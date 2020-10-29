@@ -1,0 +1,49 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base_set.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div id="wrapper">
+<form>
+<div id="my">
+<h1>개인 설정</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="myName" type="txt"/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="myProfile"></div>
+<input type="button" class="findProfile" id="myFindProfile" value="프로필사진 선택"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<div class="roster" id="myRoster"></div>
+<input type="button" class="setRoster" id="mySetRoster" value="로스터 선택"/>
+</div>
+</div>
+<!-- 상대쪽도 세팅하는 1인용전용-->
+<div id="op">
+<h1>상대 설정</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="opName" type="txt"/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="opProfile"></div>
+<input type="button" class="findProfile" id="opFindProfile" value="프로필사진 선택"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<div class="roster" id="opRoster"></div>
+<input type="button" class="setRoster" id="opSetRoster" value="로스터 선택"/>
+</div>
+</div>
+<input type="button" id="finish" value="입장"/>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base_set.css" type="text/css" rel="stylesheet"/>
+	<script>
+		var arr=["그레니어","기자로프","나암","노에미","도구로","디드리트","디오스","디하르트","라나","란디우스","란스","란포드","람다","레나타","레딘","레스터","레아드","레온","레온하르트","레이첼","레인폴스","레티시아","렌","로우가","로자리아","로젠실","루나","루인","리스틸","리아나","리코리스","리파니","린","마리엘","마이야","매튜","매튜기병","매튜비병","매튜암살","멜파니","미지의기사","발가스","베르너","베른하르트","베티","보젤","브렌다","비라쥬","사쿠라","샤르티아","세계수의현자","세레나","셀파닐","소니아","소피아","쉐리","스미레","스코트","시그마","실린카","실버울프","아레스","아론","아리안로드","아멜다","아슈람","아이리스","아인즈","아카야","안나","안젤리나","안젤리카","알베도","알테뮬러","알티나","알프레드","에그베르트","에마링크","에밀리아","에스텔","엘라스타","엘윈","여신의화신","오메가","올리버","올리비에","요슈아","윌러","유리아","유스케","이멜다","일루시아","제리올","제시카","젤다","쥬그라","츠바메","카즈마","쿠라마","크리스","클라렛","클로제","클로테르","키리카제","키스","탄생의빛","티아리스","파나","판","페라키아","프레아","플로렌티아","피엘","필로테스","헤인","헬레나","히에이","힐다","banned","picked"]; // 영웅 리스트
+		function setProfile(){ // 선택 페이지는 어떻게? 이건 선택페이지에서 넘어올 때 작업
+			//새 창을 여는 방법
+			//선택창을 보여주게 하는 방법
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+		}
+		function openProfile(){
+			var html="";
+			html = html+'<form><input type="submit" value="선택" id="profileSelect"/><div id="forScroll"><table class="profileTable" id="picTable">'; // 머리
+			for (var i = 0;i<parseInt(arr.length/3)+1 ;i++ ){ // 줄 진입
+				html=html+"<tr>";
+				for (var j=0;j<3;j++){// 각 칸마다
+					var no = i*3 + j + 1
+					html=html+"<td>";
+					html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck3(this)";/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
+					html=html+"</td>";
+				}
+				html=html+"</tr>";
+			}
+			html=html+"</table></div></form>";
+			var test = document.getElementById("profileSelector");
+			test.innerHTML=html;
+		}
+	</script>
+</head>
+<body>
+<div id="wrapper">
+<form>
+<div id="my">
+<h1>개인 설정</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="myName" type="txt"/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="myProfile"></div>
+<input type="button" class="findProfile" id="myFindProfile" value="프로필사진 선택" onclick="setProfile();"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<div class="profile2" id="my1"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my2"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my3"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my4"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my5"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my6"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my7"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my8"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my9"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my10"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my11"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my12"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my13"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my14"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my15"></div>
+		</td>
+	</tr>
+</table>
+<input type="button" class="setRoster" id="mySetRoster" value="로스터 선택"/>
+</div>
+</div>
+<!-- 상대쪽도 세팅하는 1인용전용-->
+<div id="op">
+<h1>상대 설정</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="opName" type="txt"/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="opProfile"></div>
+<input type="button" class="findProfile" id="opFindProfile" value="프로필사진 선택" onclick="setProfile();"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<div class="profile2" id="op1"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op2"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op3"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op4"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op5"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op6"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op7"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op8"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op9"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op10"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op11"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op12"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op13"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op14"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op15"></div>
+		</td>
+	</tr>
+</table>
+<div class="roster" id="opRoster"></div>
+<input type="button" class="setRoster" id="opSetRoster" value="로스터 선택"/>
+</div>
+</div>
+<div id="map">
+	<h2>맵 선택</h2>
+	<div id="mapImg"></div>
+	<input id="setMap" type="button" value="맵 선택"/>
+</div>
+<input type="submit" id="finish" value="입장"/>
+</form>
+</div>
+
+<!--프로필 선택창-->
+<div id="profileSelector">
+<form>
+<input type="submit" value="선택" id="profileSelect"/>
+<div id="forScroll">
+<table class="profileTable" id="picTable">
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy1"  onclick="count_ck3(this)";/>
+		<label for="pmy1" id="lpmy1"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy2"  onclick="count_ck3(this)"/>
+		<label for="pmy2" id="lpmy2"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy3"  onclick="count_ck3(this)"/>
+		<label for="pmy3" id="lpmy3"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy4"  onclick="count_ck3(this)"/>
+		<label for="pmy4" id="lpmy4"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy5"  onclick="count_ck3(this)"/>
+		<label for="pmy5" id="lpmy5"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy6"  onclick="count_ck3(this)"/>
+		<label for="pmy6" id="lpmy6"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy7"  onclick="count_ck3(this)"/>
+		<label for="pmy7" id="lpmy7"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy8"  onclick="count_ck3(this)"/>
+		<label for="pmy8" id="lpmy8"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy9"  onclick="count_ck3(this)"/>
+		<label for="pmy9" id="lpmy9"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy10"  onclick="count_ck3(this)"/>
+		<label for="pmy10" id="lpmy10"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy11"  onclick="count_ck3(this)"/>
+		<label for="pmy11" id="lpmy11"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy12"  onclick="count_ck3(this)"/>
+		<label for="pmy12" id="lpmy12"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy13"  onclick="count_ck3(this)"/>
+		<label for="pmy13" id="lpmy13"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy14"  onclick="count_ck3(this)"/>
+		<label for="pmy14" id="lpmy14"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy15"  onclick="count_ck3(this)"/>
+		<label for="pmy15" id="lpmy15"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy16"  onclick="count_ck3(this)"/>
+		<label for="pmy16" id="lpmy16"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy17"  onclick="count_ck3(this)"/>
+		<label for="pmy17" id="lpmy17"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy18"  onclick="count_ck3(this)"/>
+		<label for="pmy18" id="lpmy18"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy19"  onclick="count_ck3(this)"/>
+		<label for="pmy19" id="lpmy19"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy20"  onclick="count_ck3(this)"/>
+		<label for="pmy20" id="lpmy20"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy21"  onclick="count_ck3(this)"/>
+		<label for="pmy21" id="lpmy21"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy22"  onclick="count_ck3(this)"/>
+		<label for="pmy22" id="lpmy22"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy23"  onclick="count_ck3(this)"/>
+		<label for="pmy23" id="lpmy23"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy24"  onclick="count_ck3(this)"/>
+		<label for="pmy24" id="lpmy24"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy25"  onclick="count_ck3(this)"/>
+		<label for="pmy25" id="lpmy25"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy26"  onclick="count_ck3(this)"/>
+		<label for="pmy26" id="lpmy26"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy27"  onclick="count_ck3(this)"/>
+		<label for="pmy27" id="lpmy27"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy28"  onclick="count_ck3(this)"/>
+		<label for="pmy28" id="lpmy28"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy29"  onclick="count_ck3(this)"/>
+		<label for="pmy29" id="lpmy29"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="profileLIst" class="list" id="pmy30"  onclick="count_ck3(this)"/>
+		<label for="pmy30" id="lpmy30"/></label>
+		</td>
+	</tr>
+</table>
+</div>
+</form>
+</div>
+</body>
+</html>
