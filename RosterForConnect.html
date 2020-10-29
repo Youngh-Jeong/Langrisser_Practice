@@ -72,7 +72,7 @@
 			}
 			var chosen = arr[t];
 			var tmp = who + "ChosenProfile"
-			var target=document.getElementsByName(tmp);
+			var target=document.getElementById(tmp);
 			target.value = chosen.toString();
 			var target2=document.getElementById(who + "Profile");
 			document.getElementById("wrapper").style.visibility="visible";
@@ -134,7 +134,7 @@
 			}
 
 			var tmp = who + "ChosenRoster"
-			var target=document.getElementsByName(tmp);
+			var target=document.getElementById(tmp);
 			target.value = chosen.toString();	
 			document.getElementById("wrapper").style.visibility="visible";
 			document.getElementById("profileSelector").innerHTML="";
@@ -162,6 +162,8 @@
 //--------------------------------------------검색 기능 끝------------------------------------------------
 //===============================================입장 기능===============================================
 		function enterRoom(frm){
+			var tmp = opener.document.getElementById("myChosenProfile").value;
+			alert(tmp);
 			window.open("./openerTest.html","_blank"); //opener가 안먹으므로 다른 방법을 찾아야 함. git으로 올려보고 테스트
 		}
 	</script>
@@ -169,10 +171,10 @@
 <body>
 <div id="wrapper">
 <form name="settingFrm" action="" method="get">
-<input type="hidden" name="myChosenProfile" value=""/>
-<input type="hidden" name="opChosenProfile" value=""/>
-<input type="hidden" name="myChosenRoster" value=""/>
-<input type="hidden" name="opChosenRoster" value=""/>
+<input type="hidden" id= "myChosenProfile" value=""/>
+<input type="hidden" id="opChosenProfile" value=""/>
+<input type="hidden" id="myChosenRoster" value=""/>
+<input type="hidden" id="opChosenRoster" value=""/>
 <div id="my">
 <h1>개인 설정</h1>
 <div class="row">
