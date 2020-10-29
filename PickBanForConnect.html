@@ -7,12 +7,16 @@
 		/*시작시 들고있어야 할 정보들*/
 		var myProfile = opener.document.getElementById("myChosenProfile").value;
 		var opProfile = opener.document.getElementById("myChosenProfile").value;
-		document.getElementById(myTumbnail).src = "url('./프로필/" + myProfile + ".png";
-		document.getElementById(opTumbnail).src = "url('./프로필/" + myProfile + ".png";
+		document.getElementById("myTumbnail").src = "url('./프로필/" + myProfile + ".png";
+		document.getElementById("opTumbnail").src = "url('./프로필/" + myProfile + ".png";
 		var myR = opener.document.getElementById("myChosenRoster").value;
 		var opR = opener.document.getElementById("opChosenRoster").value;
 		var myRoster=myR.split(",");
 		var opRoster=myR.split(",");
+		var myNick = opener.document.getElementById("myName").value;
+		var opNick = opener.document.getElementById("opName").value;
+		document.getElementById("myNickname").innerHTML = myNick;
+		document.getElementById("opNickname").innerHTML = opNick;
 
 		var isFirst=false;//선을 정하는 방법? 로비에서 넘어오면서 처리 후 들고옴. 후공이라고 가정하고 작성
 		/*var myRoster=["란디우스","쥬그라","윌러","리아나","아이리스","디드리트","유스케","보젤","리스틸","미지의기사","유리아","젤다","클라렛","히에이","루나"].sort();
@@ -303,12 +307,12 @@
 <div class="profile" id="user">
 	<img id="myTumbnail" class="tumbnail" src="./프로필/루나.png"/>
 	<img class="isFirst" src="./기타/선마크.png"/>
-	<p class="nickname">못난이</p>
+	<p class="nickname" id="myNickname">못난이</p>
 </div>
 <div class="profile" id="opponent">
 	<img class="isFirst" src="./기타/선마크.png"/>
 	<img  id="opTumbnail" class="tumbnail" src="./프로필/사쿠라.png"/>
-	<p class="nickname">이쁜이</p>
+	<p class="nickname" id="opNickname">이쁜이</p>
 </div>
 <div class="timer" id="myTimer">타이머</div>
 <div class="timer" id="opTimer">타이머</div>
