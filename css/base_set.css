@@ -67,3 +67,6 @@ td{border:1px solid black;width:80px;height:80px;padding:4px;}
 #profileSelect{width:100px;height:100px;float:right; margin-top:150px;}
 #profileSearch{width:100px;position:absolute;top:50px;left:450px;}
 #pickedList{width:100px;height:350px;position:absolute;top:20px;left:320px;border:1px solid black;}
+
+/*기타 추가사항 버튼*/
+#copy{width:180px;height:70px;position:absolute;left:450px;top:350px;}
