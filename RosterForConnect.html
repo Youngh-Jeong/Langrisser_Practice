@@ -88,7 +88,7 @@
 			document.getElementById("wrapper").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
 			var html = makeTable(4);
-			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
 			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
 			//이미지를 바꿔줌
 			setImage();
@@ -189,7 +189,7 @@
 <input type="hidden" id="myChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
 <input type="hidden" id="opChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
 <div id="my">
-<h1>개인 설정</h1>
+<h1>개인 설정(후공)</h1>
 <div class="row">
 <h2>이름</h2>
 <input class="name" id="myName" type="txt" placeholder="닉네임을 입력하세요."/>
@@ -263,7 +263,7 @@
 </div>
 <!-- 상대쪽도 세팅하는 1인용전용-->
 <div id="op">
-<h1>상대 설정</h1>
+<h1>상대 설정(선공)</h1>
 <div class="row">
 <h2>이름</h2>
 <input class="name" id="opName" placeholder="닉네임을 입력하세요." type="txt"/>

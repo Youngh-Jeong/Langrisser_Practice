@@ -174,6 +174,7 @@
 <input type="button" class="control" id="submitBtn" value="세팅"  onclick="pick_ban();"/>
 <input type="button" class="control" id="banBtn" value="밴" onclick="ban();"/>
 <input type="button" class="control" id="pickBtn" value="픽" onclick="return pick();"/>
+<p id="showTurn">후공<br/>밴</p>
 </form>
 <!-- 로스터 끝-->
 <!-- 픽밴 현황창-->
@@ -278,6 +279,7 @@
 				}
 				opActive=false;
 				pick_ban();
+				showPickBan();
 			} else{
 				var chkbox = document.getElementsByName("myRoster");
 				for(var i=0;i<chkbox.length; i++){
@@ -300,6 +302,7 @@
 				}
 				opActive=true;
 				pick_ban();
+				showPickBan();
 			}
 		}
 		function pick(){// 상대걸 고를 수 있는 상태면 상대것이 픽, 내걸 고를 수 있는 상태면 내것이 픽
@@ -325,6 +328,7 @@
 				/*전환하면 안됨.*/
 				alert("픽이 완료되었습니다.");
 				pick_ban();
+				showPickBan();
 				endCheck();
 			}else{
 				var chkbox = document.getElementsByName("myRoster");
@@ -344,6 +348,7 @@
 				/*전환되면 안됨.*/
 				alert("픽이 완료되었습니다.");
 				pick_ban();
+				showPickBan();
 				endCheck();
 			}
 			
@@ -432,9 +437,11 @@
 			var banButton = document.getElementById("banBtn");
 			var pickButton = document.getElementById("pickBtn");
 			if ((turn%2==1&&turn!=19)||turn==0){
+				isBan = true;
 				banButton.style.display="block";
 				pickButton.style.display="none";
 			} else {
+				isBan = false;
 				banButton.style.display="none";
 				pickButton.style.display="block";
 			}
@@ -443,9 +450,11 @@
 			var myT = document.getElementById("myTurn");
 			var opT = document.getElementById("opTurn");
 			if (turn%4==1||turn%4==2){
+				isTurn=false;
 				myT.style.visibility="hidden";
 				opT.style.visibility="visible";
 			} else {
+				isTurn=true;
 				myT.style.visibility="visible";
 				opT.style.visibility="hidden";
 			}
@@ -514,6 +523,19 @@
 				}
 			}
 		}, 1000);
-
+		
+		// 픽밴 알림창
+		function showPickBan(){
+			var target = document.getElementById("showTurn");
+			var first = "";
+			var ban = "";
+			if (isTurn){
+				first = "후공";
+			} else{ first="선공" }
+			if (isBan){
+				ban = "밴";
+			} else{ ban="픽" }
+			target.innerHTML = first + "</br>" + ban
+		}
 	</script>
 </html>
