@@ -29,7 +29,7 @@
 			document.getElementById("wrapper").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
 			var html = makeTable(3);
-			html = '<form name="frmProfile" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
+			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
 			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
 			//이미지를 바꿔줌
 			setImage();
@@ -88,7 +88,7 @@
 			document.getElementById("wrapper").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
 			var html = makeTable(4);
-			html = '<form name="frmProfile" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
 			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
 			//이미지를 바꿔줌
 			setImage();
@@ -168,7 +168,7 @@
 </head>
 <body>
 <div id="wrapper">
-<form name="settingFrm" action="" onsubmit="enterRoom(this)">
+<form name="settingFrm" action="" method="get" onsubmit="enterRoom(this)">
 <input type="hidden" name="myChosenProfile" value=""/>
 <input type="hidden" name="opChosenProfile" value=""/>
 <input type="hidden" name="myChosenRoster" value=""/>
@@ -339,7 +339,6 @@
 <!--프로필 선택창-->
 <div id="profileSelector">
 </div>
-</form>
 </div>
 </body>
 <script>
