@@ -5,14 +5,23 @@
 	<link href="css/base.css" type="text/css" rel="stylesheet"/>
 	<script>
 		/*시작시 들고있어야 할 정보들*/
+		var myProfile = opener.document.getElementById("myChosenProfile").value;
+		var opProfile = opener.document.getElementById("myChosenProfile").value;
+		myTumbnail.src = "url('./프로필/" + myProfile + ".png";
+		opTumbnail.src = "url('./프로필/" + myProfile + ".png";
+		var myR = opener.document.getElementById("myChosenRoster").value;
+		var opR = opener.document.getElementById("opChosenRoster").value;
+		var myRoster=myR.split(",");
+		var opRoster=myR.split(",");
+
 		var isFirst=false;//선을 정하는 방법? 로비에서 넘어오면서 처리 후 들고옴. 후공이라고 가정하고 작성
-		var myRoster=["란디우스","쥬그라","윌러","리아나","아이리스","디드리트","유스케","보젤","리스틸","미지의기사","유리아","젤다","클라렛","히에이","루나"].sort();
-		var opRoster=["레이첼","보젤","란디우스","쥬그라","디드리트","리스틸","티아리스","레딘","유스케","리아나","아레스","아이리스","마이야","윌러","젤다"].sort();
+		/*var myRoster=["란디우스","쥬그라","윌러","리아나","아이리스","디드리트","유스케","보젤","리스틸","미지의기사","유리아","젤다","클라렛","히에이","루나"].sort();
+		var opRoster=["레이첼","보젤","란디우스","쥬그라","디드리트","리스틸","티아리스","레딘","유스케","리아나","아레스","아이리스","마이야","윌러","젤다"].sort();*/
 		var myPick=["","","","",""];
 		var myPickNum = 0;
 		var opPick=["","","","",""];
 		var opPickNum = 0;
-		var chosenMap; // 선택된 맵
+		var chosenMap = opener.document.getElementById("setMap").value; // 선택된 맵
 		/*정보들 끝*/
 		/* 로그 형태 */
 		var gameLog = {//logFirst: 선여부 logMyRoster:내 로스터 logOpRoster:상대로스터 logChosenMap:맵 logPickBan:픽밴순서 (후공기준 상대1밴-내1밴-상대픽-상대2밴-내픽-내2밴-상대픽-....
@@ -292,13 +301,13 @@
 <body onload="pick_ban()">
 <div id="wrapper">
 <div class="profile" id="user">
-	<img class="tumbnail" src="./프로필/루나.png"/>
+	<img id="myTumbnail" class="tumbnail" src="./프로필/루나.png"/>
 	<img class="isFirst" src="./기타/선마크.png"/>
 	<p class="nickname">못난이</p>
 </div>
 <div class="profile" id="opponent">
 	<img class="isFirst" src="./기타/선마크.png"/>
-	<img class="tumbnail" src="./프로필/사쿠라.png"/>
+	<img  id="opTumbnail" class="tumbnail" src="./프로필/사쿠라.png"/>
 	<p class="nickname">이쁜이</p>
 </div>
 <div class="timer" id="myTimer">타이머</div>
