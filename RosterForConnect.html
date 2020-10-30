@@ -31,6 +31,7 @@
 		function setProfile(obj){ 	//선택창을 보여주게 함
 			who=obj.id.substring(0,2);
 			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("announce").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
 			var html = makeTable(3,10);
 			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList();"/><p id="pickedList"></p><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
@@ -94,6 +95,7 @@
 		function setRoster(obj){ 	//선택창을 보여주게 함
 			who=obj.id.substring(0,2);
 			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("announce").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
 			var html = makeTable(4,10);
 			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList2();"/><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
