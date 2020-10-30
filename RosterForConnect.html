@@ -5,15 +5,18 @@
 	<link href="css/base_set.css" type="text/css" rel="stylesheet"/>
 	<script>
 		var arr=["그레니어","기자로프","나암","노에미","도구로","디드리트","디오스","디하르트","라나","란디우스","란스","란포드","람다","레나타","레딘","레스터","레아드","레온","레온하르트","레이첼","레인폴스","레티시아","렌","로우가","로자리아","로젠실","루나","루인","리스틸","리아나","리코리스","리파니","린","마리엘","마이야","매튜","멜파니","미지의기사","발가스","베르너","베른하르트","베티","보젤","브렌다","비라쥬","사쿠라","샤르티아","세계수의현자","세레나","셀파닐","소니아","소피아","쉐리","스미레","스코트","시그마","실린카","실버울프","아레스","아론","아리안로드","아멜다","아슈람","아이리스","아인즈","아카야","안나","안젤리나","안젤리카","알베도","알테뮬러","알티나","알프레드","에그베르트","에마링크","에밀리아","에스텔","엘라스타","엘윈","여신의화신","오메가","올리버","올리비에","요슈아","윌러","유리아","유스케","이멜다","일루시아","제리올","제시카","젤다","쥬그라","츠바메","카즈마","쿠라마","크리스","클라렛","클로제","클로테르","키리카제","키스","탄생의빛","티아리스","파나","판","페라키아","프레아","플로렌티아","피엘","필로테스","헤인","헬레나","히에이","힐다","banned","picked"]; // 영웅 리스트
+		var preset1=["디드리트","란디우스","티아리스","히에이","클라렛","젤다","루나","아레스","리아나","미지의기사","리스틸","유스케","아이리스","윌러","쥬그라"];
+		var preset2=["디드리트","미지의기사","윌러","리아나","히에이","아레스","쥬그라","유리아","젤다","유스케","리스틸","루나","보젤","티아리스","란디우스"];
+
 // ==============================================프로필사진 선택창=============================================
 		var who=""; // 요청이 my인지 op인지
-		function makeTable(obj){ // 전체 영웅 테이블 String을 생성함 (onclick을 구분해야 함)
+		function makeTable(obj, num){ // 전체 영웅 테이블 String을 생성함 (onclick을 구분해야 함), num줄로 만듬
 			var html="";
 			html = html+'<table class="profileTable" id="picTable">'; // 머리
-			for (var i = 0;i<parseInt(arr.length/3) ;i++ ){ // 줄 진입
+			for (var i = 0;i<parseInt(arr.length/num) ;i++ ){ // 줄 진입
 				html=html+"<tr>";
-				for (var j=0;j<3;j++){// 각 칸마다
-					var no = i*3 + j + 1
+				for (var j=0;j<num;j++){// 각 칸마다
+					var no = i*num + j + 1
 					html=html+"<td>";
 					html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck'+obj+'(this)";/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
 					html=html+"</td>";
@@ -24,12 +27,13 @@
 			return html;
 		}
 
+
 		function setProfile(obj){ 	//선택창을 보여주게 함
 			who=obj.id.substring(0,2);
 			document.getElementById("wrapper").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
-			var html = makeTable(3);
-			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
+			var html = makeTable(3,10);
+			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList();"/><p id="pickedList"></p><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
 			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
 			//이미지를 바꿔줌
 			setImage();
@@ -45,9 +49,11 @@
 		function count_ck3(obj){ // 프로필에서 1개까지만 선택
 			var chkbox = document.getElementsByName("profileLIst");
 			var chkCnt = 0;
+			var tmp = 0;
 			for(var i=0;i<chkbox.length; i++){
 				if(chkbox[i].checked){
 					chkCnt++;
+					tmp = i;
 				}
 			}
 			if(chkCnt>1){
@@ -55,6 +61,8 @@
 			obj.checked = false;
 			return false;
 			}
+			var target = document.getElementById("pmy" + (tmp+1));
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
 		}
 		function submitProfile(){ //프사 선택창에서 ok했을 때
 			var chkbox = document.getElementsByName("profileLIst");
@@ -87,8 +95,8 @@
 			who=obj.id.substring(0,2);
 			document.getElementById("wrapper").style.visibility="hidden";
 			document.getElementById("profileSelector").style.visibility="visible";
-			var html = makeTable(4);
-			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨" onkeyup="searchList(this);"/><div id="forScroll">' + html + '</div></form>';
+			var html = makeTable(4,10);
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList2();"/><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
 			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
 			//이미지를 바꿔줌
 			setImage();
@@ -145,21 +153,61 @@
 			document.getElementById("pickedList").innerHTML=obj.toString();
 		}
 // ==============================================로스터 선택창 끝=============================================
+
 // ==============================================맵 선택창=============================================
 // ==============================================맵 선택창 끝=============================================
+
 //===========================================검색 기능==================================================
-		function searchList(obj){
-			var word = obj.value;
+		function searchList(){ // keyup에서 onclick으로 변경
+			var input = document.getElementById("profileSearch").value;
 			var tmp = 0;
 			for (var i=arr.length-1;i>=0;i-- ){
-				if (arr[i].match(word)){
+				if (arr[i].match(input)){
 					tmp=i;
 				}
 			}
-			var target = document.getElementById("lpmy" + (tmp+1));
-			target.scrollIntoView(true);
+			var chkbox = document.getElementsByName("profileLIst"); // 체크 해제
+			for(var i=0;i<chkbox.length; i++){
+				chkbox[i].checked = false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
 		}
+
+		function searchList2(){ // keyup에서 onclick으로 변경, 로스터용
+			var input = document.getElementById("profileSearch").value;
+			var tmp = 0;
+			for (var i=arr.length-1;i>=0;i-- ){
+				if (arr[i].match(input)){
+					tmp=i;
+				}
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked=["","","","","","","","","","","","","","",""];
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+					chkCnt++;
+				}
+			}
+			if(chkCnt>15){
+			alert("15개만 고르세요");
+			target.checked=false;
+			return false;
+			}
+			showOnList(picked);
+
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
+		}
+
 //--------------------------------------------검색 기능 끝------------------------------------------------
+
 //===============================================입장 기능===============================================
 		function enterRoom(frm){
 			var tmp = document.getElementById("myChosenProfile").value;
@@ -179,6 +227,28 @@
 			target.value = chosen.toString();	
 		}
 //----------------------복붙기능 끝
+
+// 엔터 막기
+	document.addEventListener('keydown',function(event){
+		if (event.keyCode === 13){
+			event.preventDefault();
+		};
+	}, true);
+//----------------------프리셋 기능
+		function preset(obj){
+			var user = obj.id.substring(0,2); // my op
+			chosen = eval(obj.value);
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById(""+user+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var tmp = user + "ChosenRoster"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();
+
+		}
+//----------------------프리셋 기능 끝
 	</script>
 </head>
 <body>
@@ -201,6 +271,11 @@
 </div>
 <div class="row">
 <h2>로스터 설정</h2>
+<select name="myPreset" id="myPreset" size="1" onchange="preset(this);">
+	<option value="">--프리셋--</option>
+	<option value="preset1">프리셋1</option>
+	<option value="preset2">프리셋2</option>
+</select>
 <table class="roster" id="myTable">
 	<tr>
 		<td>
@@ -275,6 +350,11 @@
 </div>
 <div class="row">
 <h2>로스터 설정</h2>
+<select name="opPreset" id="opPreset" size="1" onchange="preset(this);">
+	<option value="">--프리셋--</option>
+	<option value="preset1">프리셋1</option>
+	<option value="preset2">프리셋2</option>
+</select>
 <table class="roster" id="myTable">
 	<tr>
 		<td>
@@ -349,13 +429,16 @@
 </div>
 <input type="button" id="finish" value="입장"  onclick="enterRoom(this)"/>
 <input type="button" id="copy" value="-> 복붙 ->"  onclick="copySetting()"/>
+<p id="useTimerP">타이머 사용 여부</p>
+<input type="checkbox" id="useTimer" value="true"/>
+
 </form>
 </div>
-
 <!--프로필 선택창-->
 <div id="profileSelector">
 </div>
 </div>
+<p id="announce"><b>변경사항(10/30)</b><br/><br/><br/>1.요청에 따라 선택화면을 넓혔습니다.<br/>검색알고리즘도 그에 맞춰 변경했습니다.<br/><br/>2.경고창(완료했습니다)를 삭제했습니다.<br/><br/>3.밴은 무조건 2개가 되도록 수정하였습니다.<br/><br/>4.이미지를 동글뱅이로 바꿨습니다.<br/><br/>5.x나 체크표시를 고를 수 없게 막았습니다.<br/><br/>6.타이머 사용여부를 고를 수 있습니다.<br/>물론 사용한다고 타이머가 제대로 돌아가진 않습니다.<br/><br/>7.프리셋을 설정해놓았습니다.<br/>우선 시즌3 결승로스터 2개를 올려놓았습니다.<br/><br/>8.기타 문의는 념글에 댓글로<br/>닉네임: ㅇㅎㅇ</p>
 </body>
 <script>
 </script>

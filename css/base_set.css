@@ -21,7 +21,7 @@ h1{width:50%;margin:0 auto;}
 .name{width:50%;margin:0 0 0 70px;}
 /*3층*/
 .profile{
-	width:80px;height:80px;border:1px solid red;
+	width:80px;height:80px;
 	display:inline-block;background:url('../프로필/사쿠라.png') no-repeat 0 0px / contain;
 	margin-left:100px;
 	}
@@ -30,7 +30,7 @@ h1{width:50%;margin:0 auto;}
 
 /*4층*/
 .setRoster{display:inline;}
-td{border:1px solid black;width:80px;height:80px;padding:4px;}
+td{width:80px;height:80px;padding:4px;}
 .profile2{width:80px;height:80px;background:url('../프로필/아이리스.png') no-repeat 0 0px/contain;}
 .roster{width:252px;margin:10px auto;}
 .setRoster{display:block;width:100px;height:40px;margin:5px auto;}
@@ -42,12 +42,13 @@ td{border:1px solid black;width:80px;height:80px;padding:4px;}
 
 /*완료버튼*/
 #finish{width:180px;height:70px;position:absolute;left:450px;top:500px;}
-
+#useTimer{position:absolute;left:530px;top:270px;width:20px;height:20px;}
+#useTimerP{position:absolute;width:200px;height:20px;text-align:center;left:440px;top:220px;font-size:1.5em;font-weight:bold;}
 
 /*프사 선택창*/
-#profileSelector{width:550px;height:400px; position:absolute;border:1px solid black;visibility:hidden;}
+#profileSelector{display:block;margin:0 auto;position:relative;visibility:hidden;}
 .list{width:80px;height:80px;}
-#forScroll{width:300px;height:400px;overflow:auto;}
+#forScroll{width:950px;height:500px;overflow:auto; position:absolute;left:200px;top:50px;}
 #profileSelector input[type="checkbox"]+ label {
     display: block;
 	margin:0 auto;
@@ -64,9 +65,16 @@ td{border:1px solid black;width:80px;height:80px;padding:4px;}
 #profileSelector input[type="checkbox"] {
     display: none;
 }
-#profileSelect{width:100px;height:100px;float:right; margin-top:150px;}
-#profileSearch{width:100px;position:absolute;top:50px;left:450px;}
-#pickedList{width:100px;height:350px;position:absolute;top:20px;left:320px;border:1px solid black;}
+#profileSelect{width:100px;height:100px;position:absolute;top:140px;left:1280px; margin-top:15px;}
+#profileBtn{width:80px;position:absolute;top:70px;left: 1300px;}
+#profileSearch{width:100px;position:absolute;top:70px;left:1170px;}
+#pickedList{width:100px;height:350px;position:absolute;top:140px;left:1170px;border:1px solid black;}
+#alert{width:250px;position:absolute;top:110px;left:1170px;font-size:1.5em;color:red; font-weight:bold;}
 
 /*기타 추가사항 버튼*/
 #copy{width:180px;height:70px;position:absolute;left:450px;top:350px;}
+#myPreset{}
+
+/* 공지사항 */
+#announce{width:250px;height:500px;background:white;border:1px black solid;color:black;position:absolute; z-index:-1;padding:5px;}
+

@@ -3,7 +3,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link href="css/base.css" type="text/css" rel="stylesheet"/>
-	
+
 </head>
 <body onload="pick_ban()">
 <div id="wrapper">
@@ -172,7 +172,7 @@
 <!-- 상대 로스터 끝 -->
 <!--<input type="image" id="submit" value="세팅" src="./기타/확정2.png" onclick="pick_ban()"/>-->
 <input type="button" class="control" id="submitBtn" value="세팅"  onclick="pick_ban();"/>
-<input type="button" class="control" id="banBtn" value="밴" onclick="ban();"/>
+<input type="button" class="control" id="banBtn" value="밴" onclick="return ban();"/>
 <input type="button" class="control" id="pickBtn" value="픽" onclick="return pick();"/>
 <p id="showTurn">후공<br/>밴</p>
 </form>
@@ -231,6 +231,7 @@
 		var opRoster=opR.split(",");
 		var myNick = opener.document.getElementById("myName").value;
 		var opNick = opener.document.getElementById("opName").value;
+		var useTimer = opener.document.getElementById("useTimer").checked;
 		document.getElementById("myNickname").innerHTML = myNick;
 		document.getElementById("opNickname").innerHTML = opNick;
 
@@ -256,8 +257,28 @@
 		var isBan=true;	
 		var opActive=true;	// 상대의 클릭이 활성화되었는가
 		var isTurn=true;	// 내 차례인가.
+
+		function howManyChecked(name){//체크된 수
+			var chkbox = document.getElementsByName(name);
+			var chkCnt = 0;
+			for (var i = 0;i<chkbox.length;i++ ){
+				if (chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			return chkCnt;
+			
+		}
 		function ban(){ // 상대걸 고를 수 있는 상태면 상대것이 밴, 내걸 고를 수 있는 상태면 내것이 밴
 			if (opActive){
+				if (howManyChecked("opRoster")==0){
+					alert("밴을 선택해주세요");
+					return false;
+				}
+				if ((howManyChecked("opRoster")!=2)&& (turn>1)){
+					alert("밴은 2개를 고르세요.");
+					return false;
+				}
 				var chkbox = document.getElementsByName("opRoster");
 				for(var i=0;i<chkbox.length; i++){
 					if(chkbox[i].checked){
@@ -265,10 +286,10 @@
 						chkbox[i].checked=false;
 					}
 				}
-				opRoster=opRoster.sort().reverse();
+				opRoster = opRoster.sort().reverse();
 				turn ++;
 				/*활성화 대상 전환*/
-				alert("밴이 완료되었습니다.");
+//				alert("밴이 완료되었습니다.");
 				var myHero = document.getElementsByClassName("myHero");
 				var opHero = document.getElementsByClassName("opHero");
 				for (var i = 0;i<myHero.length ;i++ ){
@@ -281,6 +302,14 @@
 				pick_ban();
 				showPickBan();
 			} else{
+				if (howManyChecked("myRoster")==0){
+					alert("밴을 선택해주세요");
+					return false;
+				}
+				if ((howManyChecked("myRoster")!=2)&& (turn>1)){
+					alert("밴은 2개를 고르세요.");
+					return false;
+				}
 				var chkbox = document.getElementsByName("myRoster");
 				for(var i=0;i<chkbox.length; i++){
 					if(chkbox[i].checked){
@@ -291,7 +320,7 @@
 				myRoster=myRoster.sort().reverse();
 				turn ++;
 				/*활성화 대상 전환 (무조건 반복이 아님)*/
-				alert("밴이 완료되었습니다.");
+//				alert("밴이 완료되었습니다.");
 				var myHero = document.getElementsByClassName("myHero");
 				var opHero = document.getElementsByClassName("opHero");
 				for (var i = 0;i<myHero.length ;i++ ){
@@ -306,7 +335,11 @@
 			}
 		}
 		function pick(){// 상대걸 고를 수 있는 상태면 상대것이 픽, 내걸 고를 수 있는 상태면 내것이 픽
-			if (!isChosen){
+			var turnUser = "";
+			if (opActive){
+				turnUser = "op";
+			} else {turnUser = "my";}
+			if (howManyChecked( turnUser + "Roster")==0){
 				alert("픽을 해주세요");
 				return false;
 			}
@@ -323,10 +356,10 @@
 				opRoster=opRoster.sort().reverse();
 				turn ++;
 				/*픽한 것을 리스트에 올림*/
-				var tmp = document.getElementById("opPicked" + opPickNum)
+				var tmp = document.getElementById("opPicked" + opPickNum);
 				tmp.style.background = "url('./프로필/" + opPick[opPickNum-1] + ".png') no-repeat 0 0px / contain";
 				/*전환하면 안됨.*/
-				alert("픽이 완료되었습니다.");
+//				alert("픽이 완료되었습니다.");
 				pick_ban();
 				showPickBan();
 				endCheck();
@@ -343,10 +376,10 @@
 				myRoster=myRoster.sort().reverse();
 				turn ++;
 				/*픽한 것을 리스트에 올림*/
-				var tmp=document.getElementById("myPicked" + myPickNum)
+				var tmp=document.getElementById("myPicked" + myPickNum);
 				tmp.style.background = "url('./프로필/" + myPick[myPickNum-1] + ".png') no-repeat 0 0px / contain";
 				/*전환되면 안됨.*/
-				alert("픽이 완료되었습니다.");
+//				alert("픽이 완료되었습니다.");
 				pick_ban();
 				showPickBan();
 				endCheck();
@@ -383,13 +416,18 @@
 					hero.style.backgroundImage = "url('./프로필/"+ myRoster[i] +".png')";
 					var hero2 = document.getElementById("my"+(i+1));
 					hero2.value=i;
+					if (myRoster[i]=="banned" || myRoster[i]=="picked")	{ // 밴이나 픽된거면
+						hero2.disabled=true;
+					}
 				}
 				for (var i = 0;i<opRoster.length ;i++ ){
-					var opId ="lop" + (i+1);
 					var hero = document.getElementById("lop" + (i+1));
 					hero.style.backgroundImage = "url('./프로필/"+ opRoster[i] +".png')";
 					var hero2 = document.getElementById("op"+(i+1));
 					hero2.value=i;
+					if (opRoster[i]=="banned" || opRoster[i]=="picked")	{ // 밴이나 픽된거면
+						hero2.disabled=true;
+					}
 				}
 				showButton();
 				showTurn();
@@ -484,7 +522,7 @@
 			}
 			self.close();
 		}
-		function isChosen(){ //최신 작업 (선택되있는지 확인)
+		function isChosen(){ //최신 작업 (선택되있는지 확인) 죽은 함수
 			if (opActive){
 			var chkbox = document.getElementsByName("opRoster");
 			} else{ var chkbox = document.getElementsByName("myRoster"); }
@@ -499,32 +537,33 @@
 			}
 		}
 		
-		var x = setInterval(function(){//타이머
-			if (turn%4==1||turn%4==2){
-				var msg = "준비시간 : " + opSetTime + "<br/>남은 시간 : " + opNewTime;
-				document.getElementById("opTimer").innerHTML = msg;
-				if (opNewTime<1){
-					opSetTime--;
-				} else {opNewTime--;}
-				if (opSetTime<0){
-					alert("시간 초과! 반성하세요");
-					clearInterval(x);
-					document.getElementById("opTimer").innerHTML = "시간초과";
+		if (useTimer){
+			var x = setInterval(function(){//타이머
+				if (turn%4==1||turn%4==2){
+					var msg = "준비시간 : " + opSetTime + "<br/>남은 시간 : " + opNewTime;
+					document.getElementById("opTimer").innerHTML = msg;
+					if (opNewTime<1){
+						opSetTime--;
+					} else {opNewTime--;}
+					if (opSetTime<0){
+						alert("시간 초과! 반성하세요");
+						clearInterval(x);
+						document.getElementById("opTimer").innerHTML = "시간초과";
+					}
+				}else{
+					var msg = "준비시간 : " + mySetTime + "<br/>남은 시간 : " + myNewTime;
+					document.getElementById("myTimer").innerHTML = msg;
+					if (myNewTime<1){
+						mySetTime--;
+					} else {myNewTime--;}
+					if (mySetTime<0){
+						alert("시간 초과! 반성하세요");
+						clearInterval(x);
+						document.getElementById("myTimer").innerHTML = "시간초과";
+					}
 				}
-			}else{
-				var msg = "준비시간 : " + mySetTime + "<br/>남은 시간 : " + myNewTime;
-				document.getElementById("myTimer").innerHTML = msg;
-				if (myNewTime<1){
-					mySetTime--;
-				} else {myNewTime--;}
-				if (mySetTime<0){
-					alert("시간 초과! 반성하세요");
-					clearInterval(x);
-					document.getElementById("myTimer").innerHTML = "시간초과";
-				}
-			}
-		}, 1000);
-		
+			}, 1000);
+		}
 		// 픽밴 알림창
 		function showPickBan(){
 			var target = document.getElementById("showTurn");
@@ -532,11 +571,11 @@
 			var ban = "";
 			if (isTurn){
 				first = "후공";
-			} else{ first="선공" }
+			} else{ first="선공"; }
 			if (isBan){
 				ban = "밴";
-			} else{ ban="픽" }
-			target.innerHTML = first + "</br>" + ban
+			} else{ ban="픽" ;}
+			target.innerHTML = first + "</br>" + ban;
 		}
 	</script>
 </html>

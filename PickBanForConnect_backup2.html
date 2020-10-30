@@ -1,0 +1,563 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base.css" type="text/css" rel="stylesheet"/>
+
+</head>
+<body onload="pick_ban()">
+<div id="wrapper">
+<div class="profile" id="user">
+	<img id="myTumbnail" class="tumbnail" src="./프로필/루나.png"/>
+	<img class="isFirst" src="./기타/선마크.png"/>
+	<p class="nickname" id="myNickname">못난이</p>
+</div>
+<div class="profile" id="opponent">
+	<img class="isFirst" src="./기타/선마크.png"/>
+	<img  id="opTumbnail" class="tumbnail" src="./프로필/사쿠라.png"/>
+	<p class="nickname" id="opNickname">이쁜이</p>
+</div>
+<div class="timer" id="myTimer">타이머</div>
+<div class="timer" id="opTimer">타이머</div>
+<div id="chat">채팅창</div>
+<div id="map">맵</div>
+<form name="pickban" action="" method="post" onsubmit="return pick_ban(this);">
+<!-- 내 로스터 시작 -->
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my1" disabled="disabled" onclick="count_ck2(this)";/>
+		<label for="my1" id="lmy1"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my2" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my2" id="lmy2"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my3" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my3" id="lmy3"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my4" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my4" id="lmy4"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my5" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my5" id="lmy5"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my6" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my6" id="lmy6"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my7" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my7" id="lmy7"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my8" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my8" id="lmy8"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my9" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my9" id="lmy9"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my10" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my10" id="lmy10"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my11" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my11" id="lmy11"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my12" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my12" id="lmy12"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my13" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my13" id="lmy13"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my14" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my14" id="lmy14"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="myRoster" class="myHero" id="my15" disabled="disabled" onclick="count_ck2(this)"/>
+		<label for="my15" id="lmy15"/></label>
+		</td>
+	</tr>
+</table>
+<!-- 내 로스터 끝 -->
+<!-- 상대 로스터 시작 -->
+<table class="roster" id="opTable">
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op1" onclick="count_ck2(this)"/>
+		<label for="op1" id="lop1"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op2" onclick="count_ck2(this)"/>
+		<label for="op2" id="lop2"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op3" onclick="count_ck2(this)"/>
+		<label for="op3" id="lop3"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op4" onclick="count_ck2(this)"/>
+		<label for="op4" id="lop4"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op5" onclick="count_ck2(this)"/>
+		<label for="op5" id="lop5"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op6" onclick="count_ck2(this)"/>
+		<label for="op6" id="lop6"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op7" onclick="count_ck2(this)"/>
+		<label for="op7" id="lop7"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op8" onclick="count_ck2(this)"/>
+		<label for="op8" id="lop8"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op9" onclick="count_ck2(this)"/>
+		<label for="op9" id="lop9"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op10" onclick="count_ck2(this)"/>
+		<label for="op10" id="lop10"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op11" onclick="count_ck2(this)"/>
+		<label for="op11" id="lop11"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op12" onclick="count_ck2(this)"/>
+		<label for="op12" id="lop12"/></label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op13" onclick="count_ck2(this)"/>
+		<label for="op13" id="lop13"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op14" onclick="count_ck2(this)"/>
+		<label for="op14" id="lop14"/></label>
+		</td>
+		<td>
+		<input type="checkbox" name="opRoster" class="opHero" id="op15" onclick="count_ck2(this)"/>
+		<label for="op15" id="lop15"/></label>
+		</td>
+	</tr>
+</table>
+<!-- 상대 로스터 끝 -->
+<!--<input type="image" id="submit" value="세팅" src="./기타/확정2.png" onclick="pick_ban()"/>-->
+<input type="button" class="control" id="submitBtn" value="세팅"  onclick="pick_ban();"/>
+<input type="button" class="control" id="banBtn" value="밴" onclick="return ban();"/>
+<input type="button" class="control" id="pickBtn" value="픽" onclick="return pick();"/>
+<p id="showTurn">후공<br/>밴</p>
+</form>
+<!-- 로스터 끝-->
+<!-- 픽밴 현황창-->
+<div class="pickedList" id="myPicked">
+	<div class="picked" id="myPicked1"></div>
+	<div class="picked" id="myPicked2"></div>
+	<div class="picked" id="myPicked3"></div>
+	<div class="picked" id="myPicked4"></div>
+	<div class="picked" id="myPicked5"></div>
+</div>
+<div class="pickedList" id="opPicked">
+	<div class="picked" id="opPicked1"></div>
+	<div class="picked" id="opPicked2"></div>
+	<div class="picked" id="opPicked3"></div>
+	<div class="picked" id="opPicked4"></div>
+	<div class="picked" id="opPicked5"></div>
+</div>
+<!-- 픽밴 현황창 끝-->
+<span class="turnView" id="myTurn">내 차례</span>
+<span class="turnView" id="opTurn">상대 차례</span>
+<!-- 결과창-->
+<div class="rWindow" id="result">
+	<p class="rWindow" id="mT">당신의 픽</p>
+	<ol class="rWindow" id="mPL">
+		<li><div class="test" id="myResult1"></div></li>
+		<li><div class="test" id="myResult2"></div></li>
+		<li><div class="test" id="myResult3"></div></li>
+		<li><div class="test" id="myResult4"></div></li>
+		<li><div class="test" id="myResult5"></div></li>
+	</ol>
+	<ol class="rWindow" id="oPL">
+		<li><div class="test" id="opResult1"></div></li>
+		<li><div class="test" id="opResult2"></div></li>
+		<li><div class="test" id="opResult3"></div></li>
+		<li><div class="test" id="opResult4"></div></li>
+		<li><div class="test" id="opResult5"></div></li>
+	</ol>
+	<p class="rWindow" id="oT">상대의 픽</p>
+	<span class="rWindow" id="sat">만족도</span>
+	<input class="rWindow" type="range" min="0" max="5" step="1" id="satisfied"/>
+	<input class="rWindow" type="button" id="close" value="확인" onclick="okResult()"/>
+</div>
+</div>
+</body>
+	<script>
+alert();
+		/*시작시 들고있어야 할 정보들*/
+		var myProfile = opener.document.getElementById("myChosenProfile").value;
+		var opProfile = opener.document.getElementById("opChosenProfile").value;
+		document.getElementById("myTumbnail").src = "./프로필/" + myProfile + ".png";
+		document.getElementById("opTumbnail").src = "./프로필/" + opProfile + ".png";
+		var myR = opener.document.getElementById("myChosenRoster").value;
+		var opR = opener.document.getElementById("opChosenRoster").value;
+		var myRoster=myR.split(",");
+		var opRoster=opR.split(",");
+		var myNick = opener.document.getElementById("myName").value;
+		var opNick = opener.document.getElementById("opName").value;
+		document.getElementById("myNickname").innerHTML = myNick;
+		document.getElementById("opNickname").innerHTML = opNick;
+
+		var isFirst=false;//선을 정하는 방법? 로비에서 넘어오면서 처리 후 들고옴. 후공이라고 가정하고 작성
+		/*var myRoster=["란디우스","쥬그라","윌러","리아나","아이리스","디드리트","유스케","보젤","리스틸","미지의기사","유리아","젤다","클라렛","히에이","루나"].sort();
+		var opRoster=["레이첼","보젤","란디우스","쥬그라","디드리트","리스틸","티아리스","레딘","유스케","리아나","아레스","아이리스","마이야","윌러","젤다"].sort();*/
+		var myPick=["","","","",""];
+		var myPickNum = 0;
+		var opPick=["","","","",""];
+		var opPickNum = 0;
+		var chosenMap = opener.document.getElementById("setMap").value; // 선택된 맵
+		/*정보들 끝*/
+		/* 로그 형태 */
+		var gameLog = {//logFirst: 선여부 logMyRoster:내 로스터 logOpRoster:상대로스터 logChosenMap:맵 logPickBan:픽밴순서 (후공기준 상대1밴-내1밴-상대픽-상대2밴-내픽-내2밴-상대픽-....
+			logFirst:"false", logMyRoster:myRoster, logOpRoster:opRoster, logChosenMap:"",logPickBan:["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""], logSatisfied:"0"
+		}
+		/*함수*/
+		var mySetTime=90; // 준비 시간
+		var myNewTime=15; //남은 시간
+		var opSetTime=90;
+		var opNewTime=15;
+		var turn=0;
+		var isBan=true;	
+		var opActive=true;	// 상대의 클릭이 활성화되었는가
+		var isTurn=true;	// 내 차례인가.
+
+		function howManyChecked(name){//체크된 수
+			var chkbox = document.getElementsByName(name);
+			var chkCnt = 0;
+			for (var i = 0;i<chkbox.length;i++ ){
+				if (chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			return chkCnt;
+			
+		}
+		function ban(){ // 상대걸 고를 수 있는 상태면 상대것이 밴, 내걸 고를 수 있는 상태면 내것이 밴
+			if (opActive){
+				if (howManyChecked("opRoster")!=2){
+					alert("밴은 2개를 고르세요.");
+					return false;
+				}
+				var chkbox = document.getElementsByName("opRoster");
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						opRoster[i]="banned";
+						chkbox[i].checked=false;
+					}
+				}
+				opRoster=opRoster.sort().reverse();
+				turn ++;
+				/*활성화 대상 전환*/
+//				alert("밴이 완료되었습니다.");
+				var myHero = document.getElementsByClassName("myHero");
+				var opHero = document.getElementsByClassName("opHero");
+				for (var i = 0;i<myHero.length ;i++ ){
+					myHero[i].disabled=false;
+				}
+				for (var i = 0;i<opHero.length ;i++ ){
+					opHero[i].disabled=true;
+				}
+				opActive=false;
+				pick_ban();
+				showPickBan();
+			} else{
+				if (howManyChecked("myRoster" !=2){
+					alert("밴은 2개를 고르세요.");
+					return false;
+				}
+				var chkbox = document.getElementsByName("myRoster");
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						myRoster[i]="banned";
+						chkbox[i].checked=false;
+					}
+				}
+				myRoster=myRoster.sort().reverse();
+				turn ++;
+				/*활성화 대상 전환 (무조건 반복이 아님)*/
+//				alert("밴이 완료되었습니다.");
+				var myHero = document.getElementsByClassName("myHero");
+				var opHero = document.getElementsByClassName("opHero");
+				for (var i = 0;i<myHero.length ;i++ ){
+					myHero[i].disabled=true;
+				}
+				for (var i = 0;i<opHero.length ;i++ ){
+					opHero[i].disabled=false;
+				}
+				opActive=true;
+				pick_ban();
+				showPickBan();
+			}
+		}
+		function pick(){// 상대걸 고를 수 있는 상태면 상대것이 픽, 내걸 고를 수 있는 상태면 내것이 픽
+			if (!isChosen){
+				alert("픽을 해주세요");
+				return false;
+			}
+			if (opActive){
+				var chkbox = document.getElementsByName("opRoster");
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						opPick[opPickNum] = opRoster[i];
+						opPickNum++;
+						opRoster[i]="picked";
+						chkbox[i].checked=false;
+					}
+				}
+				opRoster=opRoster.sort().reverse();
+				turn ++;
+				/*픽한 것을 리스트에 올림*/
+				var tmp = document.getElementById("opPicked" + opPickNum)
+				tmp.style.background = "url('./프로필/" + opPick[opPickNum-1] + ".png') no-repeat 0 0px / contain";
+				/*전환하면 안됨.*/
+//				alert("픽이 완료되었습니다.");
+				pick_ban();
+				showPickBan();
+				endCheck();
+			}else{
+				var chkbox = document.getElementsByName("myRoster");
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						myPick[myPickNum] = myRoster[i];
+						myPickNum++;
+						myRoster[i]="picked";
+						chkbox[i].checked=false;
+					}
+				}
+				myRoster=myRoster.sort().reverse();
+				turn ++;
+				/*픽한 것을 리스트에 올림*/
+				var tmp=document.getElementById("myPicked" + myPickNum)
+				tmp.style.background = "url('./프로필/" + myPick[myPickNum-1] + ".png') no-repeat 0 0px / contain";
+				/*전환되면 안됨.*/
+//				alert("픽이 완료되었습니다.");
+				pick_ban();
+				showPickBan();
+				endCheck();
+			}
+			
+			if (turn==19){
+				if (opActive){
+					var myHero = document.getElementsByClassName("myHero");
+					var opHero = document.getElementsByClassName("opHero");
+					for (var i = 0;i<myHero.length ;i++ ){
+						myHero[i].disabled=false;
+					}
+					for (var i = 0;i<opHero.length ;i++ ){
+						opHero[i].disabled=true;
+					}
+					opActive=false;
+				} else{
+					var myHero = document.getElementsByClassName("myHero");
+					var opHero = document.getElementsByClassName("opHero");
+					for (var i = 0;i<myHero.length ;i++ ){
+						myHero[i].disabled=true;
+					}
+					for (var i = 0;i<opHero.length ;i++ ){
+						opHero[i].disabled=false;
+					}
+					opActive=true;
+				}
+			}
+			
+		}
+		function pick_ban(){ //sort 기능 + 버튼및 턴 제어기능 (한 번 입력시, 다음입력으로 넘어갈 때 공통 세팅(밴픽때마다 실행)
+				for (var i = 0;i<myRoster.length ;i++ ){
+					var hero = document.getElementById("lmy" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ myRoster[i] +".png')";
+					var hero2 = document.getElementById("my"+(i+1));
+					hero2.value=i;
+				}
+				for (var i = 0;i<opRoster.length ;i++ ){
+					var opId ="lop" + (i+1);
+					var hero = document.getElementById("lop" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ opRoster[i] +".png')";
+					var hero2 = document.getElementById("op"+(i+1));
+					hero2.value=i;
+				}
+				showButton();
+				showTurn();
+				myNewTime=15;
+				opNewTime=15;
+		}
+		function count_ck(obj){ // 죽은함수
+			var chkbox = document.getElementsByName("myRoster");
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			if(chkCnt>1){
+				alert("1개만 고르세요");
+				obj.checked = false;
+				return false;
+			}
+		}
+		function count_ck2(obj){ // 나도 같이 쓸수 있게 active를 활용함
+			if (opActive){
+			var chkbox = document.getElementsByName("opRoster");
+			} else{ var chkbox = document.getElementsByName("myRoster"); }
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			if(turn%2==0||turn==1||turn==19){
+				if(chkCnt>1){
+				alert("1개만 고르세요");
+				obj.checked = false;
+				return false;
+				}
+			}
+			if(chkCnt>2){
+				alert("2개만 고르세요^^");
+				obj.checked = false;
+				return false;
+			}
+		}
+		function showButton(){ //버튼 제어 함수
+			var banButton = document.getElementById("banBtn");
+			var pickButton = document.getElementById("pickBtn");
+			if ((turn%2==1&&turn!=19)||turn==0){
+				isBan = true;
+				banButton.style.display="block";
+				pickButton.style.display="none";
+			} else {
+				isBan = false;
+				banButton.style.display="none";
+				pickButton.style.display="block";
+			}
+		}
+		function showTurn(){ //턴 제어 함수
+			var myT = document.getElementById("myTurn");
+			var opT = document.getElementById("opTurn");
+			if (turn%4==1||turn%4==2){
+				isTurn=false;
+				myT.style.visibility="hidden";
+				opT.style.visibility="visible";
+			} else {
+				isTurn=true;
+				myT.style.visibility="visible";
+				opT.style.visibility="hidden";
+			}
+		}
+		function endCheck(){ // 끝났을 때 : 마지막픽이 끝남 (turn=20)
+			if (turn>=20){
+				//결과창 폼을 띄워줌
+				var rWindow = document.getElementsByClassName("rWindow");
+				for (var i = 0;i<rWindow.length ;i++ ){
+					rWindow[i].style.display = "block";
+				}
+				//픽한것들을 올려놓음
+				for(var i=0;i<myPick.length; i++){
+					var tmp = document.getElementById("myResult" + (i+1))
+					tmp.style.background = "url('./프로필/" + myPick[i] + ".png') no-repeat 0 0px / contain";
+				}
+				for(var i=0;i<myPick.length; i++){
+					var tmp = document.getElementById("opResult" + (i+1))
+					tmp.style.background = "url('./프로필/" + opPick[i] + ".png') no-repeat 0 0px / contain";
+				}
+			}
+		}
+		function okResult(){
+			var rWindow = document.getElementsByClassName("rWindow");
+			for (var i = 0;i<rWindow.length ;i++ ){
+				rWindow[i].style.display = "none";
+			}
+			self.close();
+		}
+		function isChosen(){ //최신 작업 (선택되있는지 확인)
+			if (opActive){
+			var chkbox = document.getElementsByName("opRoster");
+			} else{ var chkbox = document.getElementsByName("myRoster"); }
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+				}
+			}
+			if (chkCnt==0){
+				return false;
+			}
+		}
+		
+		var x = setInterval(function(){//타이머
+			if (turn%4==1||turn%4==2){
+				var msg = "준비시간 : " + opSetTime + "<br/>남은 시간 : " + opNewTime;
+				document.getElementById("opTimer").innerHTML = msg;
+				if (opNewTime<1){
+					opSetTime--;
+				} else {opNewTime--;}
+				if (opSetTime<0){
+					alert("시간 초과! 반성하세요");
+					clearInterval(x);
+					document.getElementById("opTimer").innerHTML = "시간초과";
+				}
+			}else{
+				var msg = "준비시간 : " + mySetTime + "<br/>남은 시간 : " + myNewTime;
+				document.getElementById("myTimer").innerHTML = msg;
+				if (myNewTime<1){
+					mySetTime--;
+				} else {myNewTime--;}
+				if (mySetTime<0){
+					alert("시간 초과! 반성하세요");
+					clearInterval(x);
+					document.getElementById("myTimer").innerHTML = "시간초과";
+				}
+			}
+		}, 1000);
+		
+		// 픽밴 알림창
+		function showPickBan(){
+			var target = document.getElementById("showTurn");
+			var first = "";
+			var ban = "";
+			if (isTurn){
+				first = "후공";
+			} else{ first="선공" }
+			if (isBan){
+				ban = "밴";
+			} else{ ban="픽" }
+			target.innerHTML = first + "</br>" + ban
+		}
+	</script>
+</html>
