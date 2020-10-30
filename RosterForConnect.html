@@ -1,0 +1,445 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base_set.css" type="text/css" rel="stylesheet"/>
+	<script>
+		var arr=["그레니어","기자로프","나암","노에미","도구로","디드리트","디오스","디하르트","라나","란디우스","란스","란포드","람다","레나타","레딘","레스터","레아드","레온","레온하르트","레이첼","레인폴스","레티시아","렌","로우가","로자리아","로젠실","루나","루인","리스틸","리아나","리코리스","리파니","린","마리엘","마이야","매튜","멜파니","미지의기사","발가스","베르너","베른하르트","베티","보젤","브렌다","비라쥬","사쿠라","샤르티아","세계수의현자","세레나","셀파닐","소니아","소피아","쉐리","스미레","스코트","시그마","실린카","실버울프","아레스","아론","아리안로드","아멜다","아슈람","아이리스","아인즈","아카야","안나","안젤리나","안젤리카","알베도","알테뮬러","알티나","알프레드","에그베르트","에마링크","에밀리아","에스텔","엘라스타","엘윈","여신의화신","오메가","올리버","올리비에","요슈아","윌러","유리아","유스케","이멜다","일루시아","제리올","제시카","젤다","쥬그라","츠바메","카즈마","쿠라마","크리스","클라렛","클로제","클로테르","키리카제","키스","탄생의빛","티아리스","파나","판","페라키아","프레아","플로렌티아","피엘","필로테스","헤인","헬레나","히에이","힐다","banned","picked"]; // 영웅 리스트
+		var preset1=["디드리트","란디우스","티아리스","히에이","클라렛","젤다","루나","아레스","리아나","미지의기사","리스틸","유스케","아이리스","윌러","쥬그라"];
+		var preset2=["디드리트","미지의기사","윌러","리아나","히에이","아레스","쥬그라","유리아","젤다","유스케","리스틸","루나","보젤","티아리스","란디우스"];
+
+// ==============================================프로필사진 선택창=============================================
+		var who=""; // 요청이 my인지 op인지
+		function makeTable(obj, num){ // 전체 영웅 테이블 String을 생성함 (onclick을 구분해야 함), num줄로 만듬
+			var html="";
+			html = html+'<table class="profileTable" id="picTable">'; // 머리
+			for (var i = 0;i<parseInt(arr.length/num) ;i++ ){ // 줄 진입
+				html=html+"<tr>";
+				for (var j=0;j<num;j++){// 각 칸마다
+					var no = i*num + j + 1
+					html=html+"<td>";
+					html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck'+obj+'(this)";/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
+					html=html+"</td>";
+				}
+				html=html+"</tr>";
+			}
+			html=html+"</table>";
+			return html;
+		}
+
+
+		function setProfile(obj){ 	//선택창을 보여주게 함
+			who=obj.id.substring(0,2);
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+			var html = makeTable(3,10);
+			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList();"/><p id="pickedList"></p><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
+			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
+			//이미지를 바꿔줌
+			setImage();
+		}
+		function setImage(){ //sort 기능 + 버튼및 턴 제어기능 (한 번 입력시, 다음입력으로 넘어갈 때 공통 세팅(밴픽때마다 실행)
+				for (var i = 0;i<arr.length ;i++ ){
+					var hero = document.getElementById("lpmy" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ arr[i] +".png')";
+					var hero2 = document.getElementById("pmy"+(i+1));
+					hero2.value=arr[i];
+				}
+		}
+		function count_ck3(obj){ // 프로필에서 1개까지만 선택
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var tmp = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					tmp = i;
+				}
+			}
+			if(chkCnt>1){
+			alert("1개만 고르세요");
+			obj.checked = false;
+			return false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1));
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
+		}
+		function submitProfile(){ //프사 선택창에서 ok했을 때
+			var chkbox = document.getElementsByName("profileLIst");
+			var t;
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					t = i;
+				}
+			}
+			if (chkCnt == 0){ // 선택 안했을 경우
+				alert("이미지를 선택해주세요.");
+				return false;
+			}
+			var chosen = arr[t];
+			var tmp = who + "ChosenProfile"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();
+			var target2=document.getElementById(who + "Profile");
+			document.getElementById("wrapper").style.visibility="visible";
+			target2.style.background = "url('./프로필/" + chosen + ".png') no-repeat 0 0px / contain"; 
+			document.getElementById("profileSelector").innerHTML="";
+			document.getElementById("profileSelector").style.visibility="hidden";
+			who="";
+		}
+// ==============================================프로필사진 선택창 끝=============================================
+// ==============================================로스터 선택창=============================================
+		function setRoster(obj){ 	//선택창을 보여주게 함
+			who=obj.id.substring(0,2);
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+			var html = makeTable(4,10);
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList2();"/><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
+			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
+			//이미지를 바꿔줌
+			setImage();
+		}
+
+		function count_ck4(obj){ // 프로필에서 15개까지만 선택
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked=["","","","","","","","","","","","","","",""];
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+					chkCnt++;
+				}
+			}
+			if(chkCnt>15){
+			alert("15개만 고르세요");
+			obj.checked = false;
+			return false;
+			}
+			showOnList(picked);
+		}
+
+		function submitRoster(){ //로스터 선택창에서 ok했을 때
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var chosen=["","","","","","","","","","","","","","",""];
+			var count=0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					chosen[count]=arr[i];
+					count++;
+				}
+			}
+			if (chkCnt < 15){ // 선택 안했을 경우
+				alert("15명을 모두 선택해주세요.");
+				return false;
+			}
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById(""+who+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var tmp = who + "ChosenRoster"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();	
+			document.getElementById("wrapper").style.visibility="visible";
+			document.getElementById("profileSelector").innerHTML="";
+			document.getElementById("profileSelector").style.visibility="hidden";
+			who="";
+		}
+		function showOnList(obj){
+			document.getElementById("pickedList").innerHTML=obj.toString();
+		}
+// ==============================================로스터 선택창 끝=============================================
+
+// ==============================================맵 선택창=============================================
+// ==============================================맵 선택창 끝=============================================
+
+//===========================================검색 기능==================================================
+		function searchList(){ // keyup에서 onclick으로 변경
+			var input = document.getElementById("profileSearch").value;
+			var tmp = 0;
+			for (var i=arr.length-1;i>=0;i-- ){
+				if (arr[i].match(input)){
+					tmp=i;
+				}
+			}
+			var chkbox = document.getElementsByName("profileLIst"); // 체크 해제
+			for(var i=0;i<chkbox.length; i++){
+				chkbox[i].checked = false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
+		}
+
+		function searchList2(){ // keyup에서 onclick으로 변경, 로스터용
+			var input = document.getElementById("profileSearch").value;
+			var tmp = 0;
+			for (var i=arr.length-1;i>=0;i-- ){
+				if (arr[i].match(input)){
+					tmp=i;
+				}
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked=["","","","","","","","","","","","","","",""];
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+					chkCnt++;
+				}
+			}
+			if(chkCnt>15){
+			alert("15개만 고르세요");
+			target.checked=false;
+			return false;
+			}
+			showOnList(picked);
+
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
+		}
+
+//--------------------------------------------검색 기능 끝------------------------------------------------
+
+//===============================================입장 기능===============================================
+		function enterRoom(frm){
+			var tmp = document.getElementById("myChosenProfile").value;
+			window.open("./PickBanForConnect.html","_blank"); //opener가 안먹으므로 다른 방법을 찾아야 함. git으로 올려보고 테스트
+		}
+//-----------------------입장기능 끝
+//-----------------------복붙 기능
+		function copySetting(){
+			var chosen=document.getElementById("myChosenRoster").value.split(",");
+
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById("op"+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var target=document.getElementById("opChosenRoster");
+			target.value = chosen.toString();	
+		}
+//----------------------복붙기능 끝
+
+// 엔터 막기
+	document.addEventListener('keydown',function(event){
+		if (event.keyCode === 13){
+			event.preventDefault();
+		};
+	}, true);
+//----------------------프리셋 기능
+		function preset(obj){
+			var user = obj.id.substring(0,2); // my op
+			chosen = eval(obj.value);
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById(""+user+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var tmp = user + "ChosenRoster"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();
+
+		}
+//----------------------프리셋 기능 끝
+	</script>
+</head>
+<body>
+<div id="wrapper">
+<form name="settingFrm" action="" method="get">
+<input type="hidden" id= "myChosenProfile" value="스미레"/>
+<input type="hidden" id="opChosenProfile" value="사쿠라"/>
+<input type="hidden" id="myChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
+<input type="hidden" id="opChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
+<div id="my">
+<h1>개인 설정(후공)</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="myName" type="txt" placeholder="닉네임을 입력하세요."/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="myProfile" style="background:url('./프로필/스미레.png') no-repeat 0 0px / contain;"></div>
+<input type="button" class="findProfile" id="myFindProfile" value="프로필사진 선택" onclick="setProfile(this);"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<select name="myPreset" id="myPreset" size="1" onchange="preset(this);">
+	<option value="">--프리셋--</option>
+	<option value="preset1">프리셋1</option>
+	<option value="preset2">프리셋2</option>
+</select>
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<div class="profile2" id="my1"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my2"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my3"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my4"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my5"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my6"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my7"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my8"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my9"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my10"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my11"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my12"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="my13"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my14"></div>
+		</td>
+		<td>
+		<div class="profile2" id="my15"></div>
+		</td>
+	</tr>
+</table>
+<input type="button" class="setRoster" id="mySetRoster" value="로스터 선택" onclick="setRoster(this);"/>
+</div>
+</div>
+<!-- 상대쪽도 세팅하는 1인용전용-->
+<div id="op">
+<h1>상대 설정(선공)</h1>
+<div class="row">
+<h2>이름</h2>
+<input class="name" id="opName" placeholder="닉네임을 입력하세요." type="txt"/>
+</div>
+<div class="row">
+<h2 class="pic">프로필 사진</h2>
+<div class="profile" id="opProfile"></div>
+<input type="button" class="findProfile" id="opFindProfile" value="프로필사진 선택" onclick="setProfile(this);"/>
+</div>
+<div class="row">
+<h2>로스터 설정</h2>
+<select name="opPreset" id="opPreset" size="1" onchange="preset(this);">
+	<option value="">--프리셋--</option>
+	<option value="preset1">프리셋1</option>
+	<option value="preset2">프리셋2</option>
+</select>
+<table class="roster" id="myTable">
+	<tr>
+		<td>
+		<div class="profile2" id="op1"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op2"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op3"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op4"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op5"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op6"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op7"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op8"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op9"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op10"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op11"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op12"></div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div class="profile2" id="op13"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op14"></div>
+		</td>
+		<td>
+		<div class="profile2" id="op15"></div>
+		</td>
+	</tr>
+</table>
+<div class="roster" id="opRoster"></div>
+<input type="button" class="setRoster" id="opSetRoster" value="로스터 선택" onclick="setRoster(this);"/>
+</div>
+</div>
+<div id="map">
+	<h2>맵 선택<br/>(이미지 생기면 대체)</h2>
+	<div id="mapImg"></div>
+	<select name="chosenMap" id="setMap" size="1">
+	<option value="분쟁의평원">분쟁의 평원</option>
+	<option value="트윈브릿지">트윈브릿지</option>
+	<option value="서풍초소">서풍 초소</option>
+	<option value=""></option>
+	<option value=""></option>
+	</select>
+</div>
+<input type="button" id="finish" value="입장"  onclick="enterRoom(this)"/>
+<input type="button" id="copy" value="-> 복붙 ->"  onclick="copySetting()"/>
+<p id="useTimerP">타이머 사용 여부</p>
+<input type="checkbox" id="useTimer" value="true"/>
+
+</form>
+</div>
+<!--프로필 선택창-->
+<div id="profileSelector">
+</div>
+</div>
+<p id="announce"><b>변경사항(10/30)</b><br/><br/><br/>1.요청에 따라 선택화면을 넓혔습니다.<br/>검색알고리즘도 그에 맞춰 변경했습니다.<br/><br/>2.경고창(완료했습니다)를 삭제했습니다.<br/><br/>3.밴은 무조건 2개가 되도록 수정하였습니다.<br/><br/>4.이미지를 동글뱅이로 바꿨습니다.<br/><br/>5.x나 체크표시를 고를 수 없게 막았습니다.<br/><br/>6.타이머 사용여부를 고를 수 있습니다.<br/>물론 사용한다고 타이머가 제대로 돌아가진 않습니다.<br/><br/>7.프리셋을 설정해놓았습니다.<br/>우선 시즌3 결승로스터 2개를 올려놓았습니다.<br/><br/>8.기타 문의는 념글에 댓글로<br/>닉네임: ㅇㅎㅇ</p>
+</body>
+<script>
+</script>
+</html>
