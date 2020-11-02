@@ -1,0 +1,986 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="css/base_consulting.css" type="text/css" rel="stylesheet"/>
+	<script>
+		var arr=["그레니어","기자로프","나암","노에미","도구로","디드리트","디오스","디하르트","라나","란디우스","란스","란포드","람다","레나타","레딘","레스터","레아드","레온","레온하르트","레이첼","레인폴스","레티시아","렌","로우가","로자리아","로젠실","루나","루인","리스틸","리아나","리코리스","리파니","린","마리엘","마이야","매튜","멜파니","미지의기사","발가스","베르너","베른하르트","베티","보젤","브렌다","비라쥬","사쿠라","샤르티아","세계수의현자","세레나","셀파닐","소니아","소피아","쉐리","스미레","스코트","시그마","실린카","실버울프","아레스","아론","아리안로드","아멜다","아슈람","아이리스","아인즈","아카야","안나","안젤리나","안젤리카","알베도","알테뮬러","알티나","알프레드","에그베르트","에마링크","에밀리아","에스텔","엘라스타","엘윈","여신의화신","오메가","올리버","올리비에","요슈아","윌러","유리아","유스케","이멜다","일루시아","제리올","제시카","젤다","쥬그라","츠바메","카즈마","쿠라마","크리스","클라렛","클로제","클로테르","키리카제","키스","탄생의빛","티아리스","파나","판","페라키아","프레아","플로렌티아","피엘","필로테스","헤인","헬레나","히에이","힐다","banned","picked","","",""]; // 영웅 리스트
+		var troopArr=new Array(76);
+		for (var i = 0;i<troopArr.length ;i++ ){
+			troopArr[i] = i;
+		}//용병리스트
+		var preset1=["디드리트","란디우스","티아리스","히에이","클라렛","젤다","루나","아레스","리아나","미지의기사","리스틸","유스케","아이리스","윌러","쥬그라"];
+		var preset2=["디드리트","미지의기사","윌러","리아나","히에이","아레스","쥬그라","유리아","젤다","유스케","리스틸","루나","보젤","티아리스","란디우스"];
+		var preset3=["란디우스","쥬그라","리아나","티아리스","아이리스","디드리트","레온","레온하르트","레티시아","리스틸","미지의기사","아레스","올리비에","요슈아","파나"];
+// ==============================================프로필사진 선택창=============================================
+		var who=""; // 요청이 my인지 op인지
+		function makeTable(obj, num, k){ // 전체 영웅 테이블 String을 생성함 (onclick을 구분해야 함), num줄로 만듬, k개 골라야 함 (-1이면 0~15개 자유선택)
+			var html="";
+			var disable="";
+			html = html+'<table class="profileTable" id="picTable">'; // 머리
+			for (var i = 0;i<parseInt((arr.length/num)) ;i++ ){ // 줄 진입
+				html=html+"<tr>";
+				for (var j=0;j<num;j++){// 각 칸마다 (빈칸과 밴픽용은 막자)
+					var no = i*num + j + 1
+					if (arr[no-1]==""||arr[no-1]=="banned"||arr[no-1]=="picked"){
+						disable="disabled='disabled'";
+					}
+					html=html+"<td>";
+					html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck(this, ' + k + ')"' + disable + ';/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
+					html=html+"</td>";
+				}
+				html=html+"</tr>";
+			}
+			html=html+"</table>";
+			return html;
+		}
+
+
+		function setProfile(obj){ 	// 프로필 선택창을 보여주게 함
+			who=obj.id.substring(0,2);
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("announce").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+			var html = makeTable(3,10,1);
+			html = '<form name="frmProfile" action="" method="get"><input type="button" value="선택" id="profileSelect" onclick="return submitProfile();"/><input type="text" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList();"/><p id="pickedList"></p><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
+			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
+			//이미지를 바꿔줌
+			setImage();
+		}
+		function setImage(){ //sort 기능 + 버튼및 턴 제어기능 (한 번 입력시, 다음입력으로 넘어갈 때 공통 세팅(밴픽때마다 실행)
+				for (var i = 0;i<arr.length ;i++ ){
+					var hero = document.getElementById("lpmy" + (i+1));
+					hero.style.backgroundImage = "url('./프로필/"+ arr[i] +".png')";
+					var hero2 = document.getElementById("pmy"+(i+1));
+					hero2.value=arr[i];
+				}
+		}
+		function count_ck3(obj){ // 프로필에서 1개까지만 선택
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var tmp = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					tmp = i;
+				}
+			}
+			if(chkCnt>1){
+			alert("1개만 고르세요");
+			obj.checked = false;
+			return false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1));
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
+		}
+		function submitProfile(){ //프사 선택창에서 ok했을 때
+			var chkbox = document.getElementsByName("profileLIst");
+			var t;
+			var chkCnt = 0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					t = i;
+				}
+			}
+			if (chkCnt == 0){ // 선택 안했을 경우
+				alert("이미지를 선택해주세요.");
+				return false;
+			}
+			var chosen = arr[t];
+			var tmp = who + "ChosenProfile"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();
+			var target2=document.getElementById(who + "Profile");
+			document.getElementById("wrapper").style.visibility="visible";
+			target2.style.background = "url('./프로필/" + chosen + ".png') no-repeat 0 0px / contain"; 
+			document.getElementById("profileSelector").innerHTML="";
+			document.getElementById("profileSelector").style.visibility="hidden";
+			who="";
+		}
+// ==============================================프로필사진 선택창 끝=============================================
+// ==============================================로스터 선택창=============================================
+		function setRoster(obj, num){ 	//선택창을 보여주게 함. num개까지 고르면 됨.
+			who=obj.id.substring(0,2);
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("announce").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+			var html = makeTable(4,10,num);
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitRoster(' + num +');"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이래뵈도 검색됨"/><input type="button" value="검색" id="profileBtn"  onclick="searchList2();"/><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
+			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
+			//이미지를 바꿔줌
+			setImage();
+		}
+		function count_ck(obj, num){ // n개까지만 선택 가능,
+			if (num==-1){
+				num = 15;
+			} else if (num==-3){num=24;	} 
+			else if(num==-2){num=6;}
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked= new Array(num);
+			if (num==24){
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						picked[chkCnt]='<img src="./troop/' + troopArr[i] + '.png" width="40" height="40" alt="' + troopArr[i] +'"/>';
+						chkCnt++;
+					}
+				}
+			}else{
+				for(var i=0;i<chkbox.length; i++){
+					if(chkbox[i].checked){
+						picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+						chkCnt++;
+					}
+				}
+			}
+			if(chkCnt>num){
+			alert(num + "개만 고르세요");
+			obj.checked = false;
+			return false;
+			}
+			showOnList(picked);
+		}
+		function count_ck4(obj){ // 프로필에서 15개까지만 선택
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked=["","","","","","","","","","","","","","",""];
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+					chkCnt++;
+				}
+			}
+			if(chkCnt>15){
+			alert("15개만 고르세요");
+			obj.checked = false;
+			return false;
+			}
+			showOnList(picked);
+		}
+
+		function submitRoster(num){ //로스터 선택창에서 ok했을 때, -1이면 최대15, -2면 최대6으로 개수 상관없이 적용되게
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var size = num;
+			if (size==-1){
+				size=15;
+			} else if(size==-2){size=6;}
+			var chosen=new Array(size);
+			var count=0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					chosen[count]=arr[i];
+					count++;
+				}
+			}
+			if (chkCnt < num && num >= 0){ // 선택 안했을 경우
+				alert(num + "명을 모두 선택해주세요.");
+				return false;
+			}
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById(""+who+(i+1));
+				if (chosen[i]==undefined){chosen[i]="banned";}
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var tmp = who + "ChosenRoster"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();	
+			document.getElementById("wrapper").style.visibility="visible";
+			document.getElementById("profileSelector").innerHTML="";
+			document.getElementById("profileSelector").style.visibility="hidden";
+			who="";
+		}
+		function showOnList(obj){
+			document.getElementById("pickedList").innerHTML=obj.toString();
+		}
+// ==============================================로스터 선택창 끝=============================================
+
+// ==============================================맵 선택창=============================================
+// ==============================================맵 선택창 끝=============================================
+
+//===========================================검색 기능==================================================
+		function searchList(){ // keyup에서 onclick으로 변경
+			var input = document.getElementById("profileSearch").value;
+			var tmp = null;
+			for (var i=arr.length-1;i>=0;i-- ){
+				if (arr[i].match(input)){
+					tmp=i;
+				}
+			}
+			if (tmp==null){
+				return false;
+			}
+			var chkbox = document.getElementsByName("profileLIst"); // 체크 해제
+			for(var i=0;i<chkbox.length; i++){
+				chkbox[i].checked = false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+			showOnList('<img src="./프로필/' + target.value + '.png" width="70" height="70" alt="' + target.value +'"/>');
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
+		}
+
+		function searchList2(){ // keyup에서 onclick으로 변경, 로스터용
+			var input = document.getElementById("profileSearch").value;
+			var tmp = null;
+			for (var i=arr.length-1;i>=0;i-- ){
+				if (arr[i].match(input)){
+					tmp=i;
+				}
+			}
+			if (tmp==null){
+				return false;
+			}
+			var target = document.getElementById("pmy" + (tmp+1)); // label을 건드릴거면 lpmy로
+			target.checked=true;
+
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var picked=["","","","","","","","","","","","","","",""];
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					picked[chkCnt]='<img src="./프로필/' + arr[i] + '.png" width="40" height="40" alt="' + arr[i] +'"/>';
+					chkCnt++;
+				}
+			}
+			if(chkCnt>15){
+			alert("15개만 고르세요");
+			target.checked=false;
+			return false;
+			}
+			showOnList(picked);
+
+			/*target.scrollIntoView(true); // 스크롤에서 내가 보이게 올려줌*/
+		}
+
+//--------------------------------------------검색 기능 끝------------------------------------------------
+
+//===============================================입장 기능===============================================
+		function enterRoom(frm){
+			var tmp = document.getElementById("myChosenProfile").value;
+			window.open("./PickBanForConnect.html","_blank"); //opener가 안먹으므로 다른 방법을 찾아야 함. git으로 올려보고 테스트
+		}
+//-----------------------입장기능 끝
+//-----------------------복붙 기능
+		function copySetting(){
+			var chosen=document.getElementById("myChosenRoster").value.split(",");
+
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById("op"+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var target=document.getElementById("opChosenRoster");
+			target.value = chosen.toString();	
+		}
+//----------------------복붙기능 끝
+
+// 엔터 막기
+	document.addEventListener('keydown',function(event){
+		if (event.keyCode === 13){
+			event.preventDefault();
+		};
+	}, true);
+//----------------------프리셋 기능
+		function preset(obj){
+			var user = obj.id.substring(0,2); // my op
+			chosen = eval(obj.value);
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById(""+user+(i+1));
+				target.style.background="url('./프로필/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var tmp = user + "ChosenRoster"
+			var target=document.getElementById(tmp);
+			target.value = chosen.toString();
+
+		}
+//----------------------프리셋 기능 끝
+//--------------------------병종 선택 기능
+		function setTrooper(){
+			document.getElementById("wrapper").style.visibility="hidden";
+			document.getElementById("announce").style.visibility="hidden";
+			document.getElementById("profileSelector").style.visibility="visible";
+			var html = makeTrooperTable(10);
+			html = '<form name="frmProfile" method="get" action=""><input type="button" value="선택" id="profileSelect" onclick="return submitTrooper();"/><p id="pickedList"></p><input type="text" value="" id="profileSearch" placeholder="이건 검색 안됨"/><input type="button" value="검색" id="profileBtn"/><p id="alert">엔터 안먹히는게 정상임</p><div id="forScroll">' + html + '</div></form>';
+			document.getElementById("profileSelector").innerHTML=html; // 창 생성했음
+			//이미지를 바꿔줌
+			setTrooperImage();
+		}
+
+		function makeTrooperTable(num){ // num:몇줄로
+			var html="";
+			html = html+'<table class="profileTable" id="picTable">'; // 머리
+			for (var i = 0;i<parseInt((troopArr.length/num)) ;i++ ){ // 줄 진입
+				html=html+"<tr>";
+				for (var j=0;j<num;j++){// 각 칸마다 (빈칸과 밴픽용은 막자)
+					var no = i*num + j + 1
+					html=html+"<td>";
+					html=html + '<input type="checkbox" name="profileLIst" class="list" id="pmy' + no + '"  onclick="count_ck(this,-3)";/><label for="pmy' + no +'" id="lpmy' + no + '"/></label>';
+					html=html+"</td>";
+				}
+				html=html+"</tr>";
+			}
+			html=html+"</table>";
+			return html;
+		}
+		function setTrooperImage(){ //sort 기능 + 버튼및 턴 제어기능 (한 번 입력시, 다음입력으로 넘어갈 때 공통 세팅(밴픽때마다 실행)
+				for (var i = 0;i<troopArr.length ;i++ ){
+					var hero = document.getElementById("lpmy" + (i+1));
+					hero.style.backgroundImage = "url('./troop/"+ troopArr[i] +".png')";
+					var hero2 = document.getElementById("pmy"+(i+1));
+					hero2.value=troopArr[i];
+				}
+		}
+		function submitTrooper(){
+			var chkbox = document.getElementsByName("profileLIst");
+			var chkCnt = 0;
+			var chosen=new Array();
+			var count=0;
+			for(var i=0;i<chkbox.length; i++){
+				if(chkbox[i].checked){
+					chkCnt++;
+					chosen[count]=troopArr[i];
+					count++;
+				}
+			}
+			for (var i=0;i<chosen.length;i++){// for문을 돌며 채워줌
+				var target=document.getElementById("tp"+(i+1));
+				if (chosen[i]==undefined){chosen[i]="";}
+				target.style.background="url('./troop/" + chosen[i] + ".png') no-repeat 0 0px / contain";
+			}
+
+			var target=document.getElementById("myTroop");
+			target.value = chosen.toString();	
+			document.getElementById("wrapper").style.visibility="visible";
+			document.getElementById("profileSelector").innerHTML="";
+			document.getElementById("profileSelector").style.visibility="hidden";
+			who="";
+		}
+//--------------------------병종 선택 끝
+	</script>
+</head>
+<body>
+<div id="wrapper">
+<form name="settingFrm" action="" method="get">
+<input type="hidden" id="myTroop" value=""/>
+<input type="hidden" id= "myChosenProfile" value="스미레"/>
+<input type="hidden" id="opChosenProfile" value="사쿠라"/>
+<input type="hidden" id="myChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
+<input type="hidden" id="sdChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
+<input type="hidden" id="opChosenRoster" value="아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스,아이리스"/>
+	<div id="my">
+	<h1>15인 로스터</h1>
+		<div class="row">
+		<h2>이름</h2>
+		<input class="name" id="myName" type="txt" placeholder="닉네임을 입력하세요."/>
+		</div>
+		<div class="row">
+		<h2 class="pic">덱 키워드 및 목표</h2>
+		<input type="txt" class="findProfile" id="myFindProfile" placeholder="ex)광역,공장,골드주차, ..."/>
+		</div>
+		<div class="row">
+		<h2>로스터 설정</h2>
+		<select name="myPreset" id="myPreset" size="1" onchange="preset(this);">
+			<option value="">--프리셋--</option>
+			<option value="preset1">프리셋1</option>
+			<option value="preset2">프리셋2</option>
+			<option value="preset3">마이로스터</option>
+		</select>
+		<table class="roster" id="myTable">
+			<tr>
+				<td>
+				<div class="profile2" id="my1"></div>
+				<select name="star1" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my2"></div>
+				<select name="star2" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my3"></div>
+				<select name="star3" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="my4"></div>
+				<select name="star4" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my5"></div>
+				<select name="star5" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my6"></div>
+				<select name="star6" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="my7"></div>
+				<select name="star7" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my8"></div>
+				<select name="star8" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my9"></div>
+				<select name="star9" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="my10"></div>
+				<select name="star10" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my11"></div>
+				<select name="star11" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my12"></div>
+				<select name="star12" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="my13"></div>
+				<select name="star13" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my14"></div>
+				<select name="star14" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="my15"></div>
+				<select name="star15" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+		</table>
+		<input type="button" class="setRoster" id="mySetRoster" value="로스터 선택" onclick="setRoster(this,15);"/>
+		</div>
+	</div>
+<!-- 상대쪽도 세팅하는 1인용전용-->
+	<div id="op">
+		<h1>후보군</h1>
+		<div class="row">
+			<h2>서브 6인</h2>
+			<table class="roster" id="sdTable">
+				<tr>
+					<td>
+					<div class="profile3" id="sd1"></div>
+					<select name="star16" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+					<td>
+					<div class="profile3" id="sd2"></div>
+					<select name="star17" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+					<td>
+					<div class="profile3" id="sd3"></div>
+					<select name="star18" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<div class="profile3" id="sd4"></div>
+					<select name="star19" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+					<td>
+					<div class="profile3" id="sd5"></div>
+					<select name="star20" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+					<td>
+					<div class="profile3" id="sd6"></div>
+					<select name="star21" class="star" size="1"/>
+						<option value="">성급</option>
+						<option value="3">3성</option>
+						<option value="4">4성</option>
+						<option value="5">5성</option>
+						<option value="6">6성</option>
+						<option value="6">용병</option>
+					</select>
+					</td>
+				</tr>
+			</table>
+			<input type="button" class="setRoster" id="sdSetRoster" value="서브 선택" onclick="setRoster(this,-2);"/>
+		</div>
+		<div class="row">
+			<h2 class="pic">훈련장</h2>
+			<table class="training">
+				<tr>
+					<td></td>
+					<td>공</td>
+					<td>방</td>
+					<td>생</td>
+					<td>패시브</td>
+				</tr>
+				<tr>
+					<td><img src="./클래스/보병.png" width="50" height="50" alt="보병"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="풀"/></td>
+				</tr>
+				<tr>
+					<td><img src="./클래스/창병.png" width="50" height="50" alt="창병"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="풀"/></td>
+				</tr>
+				<tr>
+					<td><img src="./클래스/기병.png" width="50" height="50" alt="기병"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="풀"/></td>
+				</tr>
+				<tr>
+					<td><img src="./클래스/비병.png" width="50" height="50" alt="비병"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="풀"/></td>
+				</tr>
+				<tr>
+					<td><img src="./클래스/승병.png" width="50" height="50" alt="승병"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="0%"/></td>
+					<td><input class="trainNum" type="txt" placeholder="풀"/></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="sub">
+		<div class="row">
+		<h2>대체투입 가능 목록</h2>
+		<table class="roster" id="opTable">
+			<tr>
+				<td>
+				<div class="profile2" id="op1"></div>
+				<select name="star22" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op2"></div>
+				<select name="star23" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op3"></div>
+				<select name="star24" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="op4"></div>
+				<select name="star25" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op5"></div>
+				<select name="star26" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op6"></div>
+				<select name="star27" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="op7"></div>
+				<select name="star28" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op8"></div>
+				<select name="star29" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op9"></div>
+				<select name="star30" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="op10"></div>
+				<select name="star31" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op11"></div>
+				<select name="star32" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>	
+				<td>
+				<div class="profile2" id="op12"></div>
+				<select name="star33" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="profile2" id="op13"></div>
+				<select name="star34" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op14"></div>
+				<select name="star35" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+				<td>
+				<div class="profile2" id="op15"></div>
+				<select name="star36" class="star" size="1"/>
+					<option value="">성급</option>
+					<option value="3">3성</option>
+					<option value="4">4성</option>
+					<option value="5">5성</option>
+					<option value="6">6성</option>
+					<option value="6">용병</option>
+				</select>
+				</td>
+			</tr>
+		</table>
+		<input type="button" class="setRoster" id="opSetRoster" value="백업 선택" onclick="setRoster(this,-1);"/>
+		</div>
+	</div>
+	<div id="detail">
+		<div class="row">
+		<h2>가용 병종</h2>
+		<table class="roster" id="tpTable">
+			<tr>
+				<td>
+				<div class="trooper" id="tp1"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp2"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp3"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp4"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="trooper" id="tp5"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp6"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp7"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp8"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="trooper" id="tp9"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp10"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp11"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp12"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="trooper" id="tp13"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp14"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp15"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp16"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="trooper" id="tp17"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp18"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp19"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp20"></div>
+				</td>
+				<td>
+
+			</tr>
+			<tr>
+				<td>
+				<div class="trooper" id="tp21"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp22"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp23"></div>
+				</td>
+				<td>
+				<div class="trooper" id="tp24"></div>
+				</td>
+			</tr>
+		</table>
+		<input type="button" class="setRoster" id="opSetRoster" value="병종 선택" onclick="setTrooper();"/>
+		</div>
+	</div>
+</form>
+</div>
+<!--프로필 선택창-->
+<div id="profileSelector">
+</div>
+<p id="announce"><b>변경사항(10/30)</b><br/><br/><br/>1.요청에 따라 선택화면을 넓혔습니다.<br/>검색알고리즘도 그에 맞춰 변경했습니다.<br/><br/>2.경고창(완료했습니다)를 삭제했습니다.<br/><br/>3.밴은 무조건 2개가 되도록 수정하였습니다.<br/><br/>4.이미지를 동글뱅이로 바꿨습니다.<br/><br/>5.x나 체크표시를 고를 수 없게 막았습니다.<br/><br/>6.타이머 사용여부를 고를 수 있습니다.<br/>물론 사용한다고 타이머가 제대로 돌아가진 않습니다.<br/><br/>7.프리셋을 설정해놓았습니다.<br/>우선 시즌3 결승로스터 2개를 올려놓았습니다.<br/><br/>8.선택창에서 일부 캐릭터가 나오지 않는 것을 수정했습니다.<br/>이제 검색 시 정확한 이름이 나오지 않으면 선택되지 않습니다.<br/><br/>9.속도 개선을 위해 경량화중입니다. 랑붕이 간바룽~<br/><br/>**기타 문의는 념글에 댓글로<br/>닉네임: ㅇㅎㅇ</p>
+</body>
+<script>
+</script>
+</html>

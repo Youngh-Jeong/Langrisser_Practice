@@ -2,12 +2,14 @@ body{
 	color:#000000; font-size:12px;line-height:1.2;font-family:"돋움",Dotum,"굴림",Gulim,Verdana,sans-serif;background:url('../기타/bg_body.gif') repeat-x;
 }
 a{text-decoration:none;}
-#wrapper{width:1080px;margin:50px auto 0;position:relative;}
+#wrapper{width:1440px;margin:50px auto 0;position:relative;}
 h1,h2,h3,div{margin:0;padding:0;}
+h1,{text-align:center;}
 
-#my, #op{border:1px solid blue; background-color:#FFFFFF; width:400px; position:relative;}
+#my, #op, #sub, #detail {border:1px solid blue; background-color:#FFFFFF; width:350px; position:relative;}
 #my{float:left;}
-#op{float:right;}
+#sub{float:right;}
+#op, #detail {float:left;margin-left:10px;}
 
 .row{display:block;position:relative;border-top:1px solid green;padding:10px 0;}
 
@@ -76,8 +78,12 @@ td{width:80px;height:80px;padding:4px;}
 #myPreset{}
 
 /* 공지사항 */
-#announce{width:250px;height:500px;background:white;border:1px black solid;color:black;position:absolute; z-index:-1;padding:5px;}
+#announce{width:200px;background:white;border:1px black solid;color:black;position:absolute;top:30px; z-index:-1;padding:5px;}
 
 /* 자기관리용 */
 .star{width:100%;}
-
+.profile3{width:80px;height:80px;background:url('../프로필/아이리스.png') no-repeat 0 0px/contain;}
+.training td{width:50px;height:50px;padding:4px;} 
+.trainNum{width:50px;}
+#myFindProfile{margin:0 auto; width:300px;margin-top:15px;}
+.trooper{width:75px;height:100px;}
