@@ -33,7 +33,7 @@ h1{width:50%;margin:0 auto;}
 /*4층*/
 .setRoster{display:inline;}
 td{width:80px;height:80px;padding:4px;}
-.profile2{width:80px;height:80px;background:url('../프로필/아이리스.png') no-repeat 0 0px/contain;}
+.profile2{width:80px;height:80px;background:url('../프로필/사쿠라.png') no-repeat 0 0px/contain;}
 .roster{width:252px;margin:10px auto;}
 .setRoster{display:block;width:100px;height:40px;margin:5px auto;}
 
@@ -82,7 +82,7 @@ td{width:80px;height:80px;padding:4px;}
 
 /* 자기관리용 */
 .star{width:100%;}
-.profile3{width:80px;height:80px;background:url('../프로필/아이리스.png') no-repeat 0 0px/contain;}
+.profile3{width:80px;height:80px;background:url('../프로필/사쿠라.png') no-repeat 0 0px/contain;}
 .training td{width:50px;height:50px;padding:4px;} 
 .trainNum{width:50px;}
 #myFindProfile{margin:0 auto; width:300px;margin-top:15px;}
