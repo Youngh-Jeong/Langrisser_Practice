@@ -89,4 +89,5 @@ td{width:80px;height:80px;padding:4px;}
 .trooper{width:75px;height:100px;}
 #memo{width:200px;height:200px;}
 
-#loadData{width:100px;height:70px;}
+.loadData{width:100px;height:70px;position:relative;top:2px;margin:10px;}
+.codeBox{height:70px;vertical-align:middle;}
